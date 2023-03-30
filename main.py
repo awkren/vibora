@@ -2,6 +2,7 @@
 # refer to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
 
 from pdf2image import convert_from_path, convert_from_bytes
+from PyPDF2 import PdfReader
 import os
 import time
 import sys
@@ -12,6 +13,7 @@ from pdf2image.exceptions import (
     PDFPopplerTimeoutError
 )
 
+# convert pdf to png function
 def pdf_to_png(pdf_path):
   # example: images = convert_from_path(r'C:/path/to/file.pdf')
   images = convert_from_path(pdf_path)
@@ -19,14 +21,26 @@ def pdf_to_png(pdf_path):
     # this is the name of converted file. change that later, too weird a file always called page[number]
     images[i].save('page' + str(i) + '.png')
 
+def pdf_to_text(pdf_path):
+  reader = PdfReader(pdf_path)
+  page = reader.pages[0]
+  original_stdout = sys.stdout
+  with open('file.txt', 'w') as f:
+    sys.stdout = f
+    print(page.extract_text())
+    sys.stdout = original_stdout
+
 if __name__ == '__main__':
   # case we type python main.py
   if len(sys.argv) == 1:
     print("Missign arguments, see `python main.py help` for reference on how to use it!")
   # case we type python main.py help
   elif sys.argv[1].lower() == 'help':
-    print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!\n\nPDF TO PNG:\nto convert a .PDF to .PNG, use: python main.py pdf2png file.pdf')
-    print('Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
+    print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!')
+    print('\nPDF TO PNG:\n   to convert a .PDF to .PNG, use: python main.py pdf2png file.pdf')
+    print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
+    print('\nPDF TO TEXT:\n   to convert a .PDF to .TEXT, use: python main.py pdf2text [file].pdf')
+    print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
     exit()
   # case we actually pass a valid argument
   else:
@@ -34,7 +48,7 @@ if __name__ == '__main__':
     command = sys.argv[1].lower()
     
     # convert pdf to png
-    # e.g. python main.py pdf2png | note that it also expects a file! -> python main.py pdf2png file.pdf
+    # e.g. python main.py pdf2png | note that it expects a file! -> python main.py pdf2png file.pdf
     if command == 'pdf2png':
       pdf_path = sys.argv[2]
       # check if file exists
@@ -47,4 +61,16 @@ if __name__ == '__main__':
       time.sleep(2)
       print('File converted!')
     
-    
+    # convert pdf to text
+    # e.g. python main.py pdf2text | note that it expects a file! -> python main.py pdf2text file.pdf
+    if command == 'pdf2text':
+      pdf_path = sys.argv[2]
+      # check if file exists
+      file_exists = os.path.isfile(pdf_path)
+      if not file_exists:
+        print('File not found. Is the path correct?')
+        exit()
+      print('Converting you file. Just a second...')
+      pdf_to_text(pdf_path)
+      time.sleep(2)
+      print('File converted!')
