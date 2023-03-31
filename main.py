@@ -49,7 +49,11 @@ def extract_img_from_pdf(pdf_path):
       xref = img[0]
       base_image = pdf_file.extract_image(xref)
       image_bytes = base_image["image"]
-      image_exit = base_image["ext"]
+      image_ext = base_image["ext"]
+      image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
+      with open(image_name, "wb") as f:
+        f.write(image_bytes)
+      print(f"Saved {image_name}")
 
 if __name__ == '__main__':
   # case we type python main.py
