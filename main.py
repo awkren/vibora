@@ -1,5 +1,5 @@
 # if you are on windows, download Poppler and add it to PATH
-# refer to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
+# go to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
 
 from pdf2image import convert_from_path, convert_from_bytes
 from PyPDF2 import PdfReader
@@ -42,18 +42,27 @@ def extract_img_from_pdf(pdf_path):
     page = pdf_file[page_index]
     image_list = page.get_images()
     if image_list:
-      print(f"Found a total of {len(image_list)} images in {page_index}")
+      one_image = 'image'
+      if len(image_list) == 1:
+        print(f"Found {len(image_list)} {one_image} in the {file} file.")
+      else:
+        print(f"Found a total of {len(image_list)} images in the {file} file.")
     else:
       print("No images found on ", page_index)
-    for image_index, img in enumerate(page.get_images(), start=1):
-      xref = img[0]
-      base_image = pdf_file.extract_image(xref)
-      image_bytes = base_image["image"]
-      image_ext = base_image["ext"]
-      image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
-      with open(image_name, "wb") as f:
-        f.write(image_bytes)
-      print(f"Saved {image_name}")
+    choice = input("Do you want to extract the images I found? [YES/NO]\n").lower()
+    if choice == 'yes':
+      for image_index, img in enumerate(page.get_images(), start=1):
+        xref = img[0]
+        base_image = pdf_file.extract_image(xref)
+        image_bytes = base_image["image"]
+        image_ext = base_image["ext"]
+        image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
+        with open(image_name, "wb") as f:
+          f.write(image_bytes)
+        print(f"Saved {image_name}")
+    else:
+      exit()
+      
 
 if __name__ == '__main__':
   # case we type python main.py
@@ -102,9 +111,14 @@ if __name__ == '__main__':
 
     # extract imgs from pdf
     if command == 'extractimg':
-      pdf_path = sys.argv[2] 
+      pdf_path = sys.argv[2]
+      # check if file exists
       file_exists = os.path.isfile(pdf_path)
       if not file_exists:
-        print('file not found')
+        print('File not found. Is the path correct?')
         exit()
       extract_img_from_pdf(pdf_path)
+      time.sleep(2)
+      print('We are extracting images from the file you provided')
+      print("Just a second...")
+      print("All done! Images extracted")
