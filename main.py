@@ -2,7 +2,7 @@
 # go to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
 
 from pdf2image import convert_from_path, convert_from_bytes
-from PyPDF2 import PdfReader
+from PyPDF2 import PdfReader, PdfWriter
 import os
 import time
 import sys
@@ -63,64 +63,30 @@ def extract_img_from_pdf(pdf_path):
         print(f"Saved {image_name}")
     else:
       exit()
-      
-
-def get_size_format(b, factor=1024, suffix="B"):
-    """
-    Scale bytes to its proper byte format
-    e.g:
-        1253656 => '1.20MB'
-        1253656678 => '1.17GB'
-    """
-    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
-        if b < factor:
-            return f"{b:.2f}{unit}{suffix}"
-        b /= factor
-    return f"{b:.2f}Y{suffix}"
-
-def compress_file(input_file: str, output_file: str):
-    """Compress PDF file"""
-    if not output_file:
-        output_file = input_file
-    initial_size = os.path.getsize(input_file)
-    try:
-        # Initialize the library
-        PDFNet.Initialize()
-        doc = PDFDoc(input_file)
-        # Optimize PDF with the default settings
-        doc.InitSecurityHandler()
-        # Reduce PDF size by removing redundant information and compressing data streams
-        Optimizer.Optimize(doc)
-        doc.Save(output_file, SDFDoc.e_linearized)
-        doc.Close()
-    except Exception as e:
-        print("Error compress_file=", e)
-        doc.Close()
-        return False
-    compressed_size = os.path.getsize(output_file)
-    ratio = 1 - (compressed_size / initial_size)
-    summary = {
-        "Input File": input_file, "Initial Size": get_size_format(initial_size),
-        "Output File": output_file, f"Compressed Size": get_size_format(compressed_size),
-        "Compression Ratio": "{0:.3%}.".format(ratio)
-    }
-    # Printing Summary
-    print("## Summary ########################################################")
-    print("\n".join("{}:{}".format(i, j) for i, j in summary.items()))
-    print("###################################################################")
-    return True
+  
+# pypdf2 loseless compression
+def compress_pdf(pdf_path):
+  reader = PdfReader(pdf_path)
+  writer = PdfWriter()
+  for page in reader.pages:
+    page.compress_content_streams() # attention! this is cpu intensive!!!
+    writer.add_page(page)
+  with open("file.pdf", 'wb') as f:
+    writer.write(f)
 
 if __name__ == '__main__':
   # case we type python main.py
   if len(sys.argv) == 1:
-    print("Missign arguments, see `python main.py help` for reference on how to use it!")
+    print("Missign arguments, see 'python main.py help' for reference on how to use it!")
   # case we type python main.py help
   elif sys.argv[1].lower() == 'help':
     print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!')
-    print('\nPDF TO PNG:\n   to convert a .PDF to .PNG, use: python main.py pdf2png file.pdf')
+    print("\nPDF TO PNG:\n   To convert a .PDF to .PNG, use: 'python main.py pdf2png [file].pdf'")
     print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
-    print('\nPDF TO TEXT:\n   to convert a .PDF to .TEXT, use: python main.py pdf2text [file].pdf')
+    print("\nPDF TO TEXT:\n   To convert a .PDF to .TXT, use: 'python main.py pdf2text [file].pdf'")
     print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
+    print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'python main.py extractimg [file].pdf'")
+    print('   You will be prompted with the amount of images found, and if you want to proceed or not.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -168,3 +134,10 @@ if __name__ == '__main__':
       print('We are extracting images from the file you provided')
       print("Just a second...")
       print("All done! Images extracted")
+
+    if command == 'compress':
+      pdf_path = sys.argv[2]
+      compress_pdf(pdf_path )
+
+    else:
+      print("Command not recognized. Use 'python main.py help' to see all the available commands")
