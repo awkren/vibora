@@ -76,16 +76,18 @@ def compress_pdf(pdf_path):
 if __name__ == '__main__':
   # case we type python main.py
   if len(sys.argv) == 1:
-    print("Missign arguments, see 'python main.py help' for reference on how to use it!")
+    print("Missign arguments, see 'vibora help' for reference on how to use it!")
   # case we type python main.py help
   elif sys.argv[1].lower() == 'help':
     print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!')
-    print("\nPDF TO PNG:\n   To convert a .PDF to .PNG, use: 'python main.py pdf2png [file].pdf'")
+    print("\nPDF TO PNG:\n   To convert a .PDF to .PNG, use: 'vibora pdf2png [file].pdf'")
     print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
-    print("\nPDF TO TEXT:\n   To convert a .PDF to .TXT, use: 'python main.py pdf2text [file].pdf'")
+    print("\nPDF TO TEXT:\n   To convert a .PDF to .TXT, use: 'vibora pdf2text [file].pdf'")
     print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
-    print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'python main.py extractimg [file].pdf'")
+    print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'vibora extractimg [file].pdf'")
     print('   You will be prompted with the amount of images found, and if you want to proceed or not.')
+    print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'vibora compress [file].pdf'")
+    print('   It will try to compress your file without losing quality or removing content.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -143,4 +145,4 @@ if __name__ == '__main__':
       exit()
 
     else:
-      print("Command not recognized. Use 'python main.py help' to see all the available commands")
+      print("Command not recognized. Use 'vibora help' to see all the available commands")
