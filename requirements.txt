@@ -1,2 +1,4 @@
 pdf2image
-pillow
+pypdf2
+pymupdf
+fitz

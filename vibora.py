@@ -8,7 +8,6 @@ import time
 import sys
 import fitz
 import io
-from PDFNetPython3.PDFNetPython import PDFDoc, Optimizer, SDFDoc, PDFNet
 from PIL import Image
 from pdf2image.exceptions import (
     PDFInfoNotInstalledError,
@@ -106,6 +105,7 @@ if __name__ == '__main__':
       pdf_to_png(pdf_path)
       time.sleep(2)
       print('File converted!')
+      exit()
     
     # convert pdf to text
     # e.g. python main.py pdf2text | note that it expects a file! -> python main.py pdf2text file.pdf
@@ -120,6 +120,7 @@ if __name__ == '__main__':
       pdf_to_text(pdf_path)
       time.sleep(2)
       print('File converted!')
+      exit()
 
     # extract imgs from pdf
     if command == 'extractimg':
@@ -134,10 +135,12 @@ if __name__ == '__main__':
       print('We are extracting images from the file you provided')
       print("Just a second...")
       print("All done! Images extracted")
+      exit()
 
     if command == 'compress':
       pdf_path = sys.argv[2]
-      compress_pdf(pdf_path )
+      compress_pdf(pdf_path)
+      exit()
 
     else:
       print("Command not recognized. Use 'python main.py help' to see all the available commands")
