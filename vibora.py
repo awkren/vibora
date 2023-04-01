@@ -40,35 +40,24 @@ def extract_img_from_pdf(pdf_path):
   pdf_file = fitz.open(file)
   for page_index in range(len(pdf_file)):
     page = pdf_file[page_index]
-    image_list = page.get_images()
-    if image_list:
-      one_image = 'image'
-      if len(image_list) == 1:
-        print(f"Found {len(image_list)} {one_image} in the {file} file.")
-      else:
-        print(f"Found a total of {len(image_list)} images in the {file} file.")
-    else:
-      print("No images found on ", page_index)
-    choice = input("Do you want to extract the images I found? [YES/NO]\n").lower()
-    if choice == 'yes':
-      for image_index, img in enumerate(page.get_images(), start=1):
-        xref = img[0]
-        base_image = pdf_file.extract_image(xref)
-        image_bytes = base_image["image"]
-        image_ext = base_image["ext"]
-        image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
-        with open(image_name, "wb") as f:
-          f.write(image_bytes)
-        print(f"Saved {image_name}")
-    else:
-      exit()
+  
+    for image_index, img in enumerate(page.get_images(), start=1):
+      xref = img[0]
+      base_image = pdf_file.extract_image(xref)
+      image_bytes = base_image["image"]
+      image_ext = base_image["ext"]
+      # image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
+      image_name = f"img{image_index}.{image_ext}"
+      with open(image_name, "wb") as f:
+        f.write(image_bytes)
+      # print(f"Saving {image_name}")
   
 # pypdf2 loseless compression
 def compress_pdf(pdf_path):
   reader = PdfReader(pdf_path)
   writer = PdfWriter()
   for page in reader.pages:
-    page.compress_content_streams() # attention! this is cpu intensive!!!
+    page.compress_content_streams() # this is cpu intensive!!!
     writer.add_page(page)
   with open("file.pdf", 'wb') as f:
     writer.write(f)
@@ -86,7 +75,7 @@ if __name__ == '__main__':
     print('   Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)')
     print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'vibora extractimg [file].pdf'")
     print('   You will be prompted with the amount of images found, and if you want to proceed or not.')
-    print("\nEXTRACT IMAGES FROM PDF:\n   To extract images from a .PDF file, use: 'vibora compress [file].pdf'")
+    print("\nCOMPRESS PDF:\n   To compress a .PDF file, use: 'vibora compress [file].pdf'")
     print('   It will try to compress your file without losing quality or removing content.')
     exit()
   # case we actually pass a valid argument
@@ -134,15 +123,23 @@ if __name__ == '__main__':
         exit()
       extract_img_from_pdf(pdf_path)
       time.sleep(2)
-      print('We are extracting images from the file you provided')
+      # print('Extracting images from the file you provided')
       print("Just a second...")
       print("All done! Images extracted")
       exit()
 
+    # compress pdf
     if command == 'compress':
       pdf_path = sys.argv[2]
+      # check if file exists
+      file_exists = os.path.isfile(pdf_path)
+      if not file_exists:
+        print('File not found. Is the path correct?')
+        exit()
       compress_pdf(pdf_path)
-      exit()
+      print('Compressing your file, just a second...')
+      time.sleep(2)
+      print('All done! File compressed')
 
     else:
       print("Command not recognized. Use 'vibora help' to see all the available commands")
