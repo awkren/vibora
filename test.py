@@ -10,7 +10,7 @@ class ViboraTesting(unittest.TestCase):
   def test_pdf_to_png(self):
     try:
       # call the pdf_to_png function with tompaper.pdf file
-      pdf_to_png('tompaper.pdf')
+      pdf_to_png('testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_png raised an unexpected exception: {e}")
     # check if the output file exists
@@ -23,13 +23,13 @@ class ViboraTesting(unittest.TestCase):
   def test_pdf_to_text(self):
     try:
       # call the pdf_to_text function with tompaper.pdf file
-      pdf_to_text('tompaper.pdf')
+      pdf_to_text('testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_text raised an unexpected exception: {e}")
     # check if the output file exists
     self.assertTrue(os.path.exists('file.txt'))
     # check if the output file has content
-    with open('file.txt', 'r') as f:
+    with open('file.txt', 'r', encoding='utf-8') as f:
       content = f.read()
       self.assertGreater(len(content), 0)
     # Delete the test files
@@ -39,7 +39,7 @@ class ViboraTesting(unittest.TestCase):
   def test_img_from_pdf(self):
     try:
       # call the extract_img_from_pdf function with dummy.pdf file
-      extract_img_from_pdf('dummy.pdf')
+      extract_img_from_pdf('testpaper2.pdf')
     except Exception as e:
       self.fail(f"extract_img_from_pdf raised an unexpected exception: {e}")
     # check if the output file exists
@@ -52,7 +52,7 @@ class ViboraTesting(unittest.TestCase):
   def test_compress_pdf(self):
     try:
       #call the compress_pdf function with tompaper.pdf file
-      compress_pdf('tompaper.pdf')
+      compress_pdf('testpaper1.pdf')
     except Exception as e:
       self.fail(f"compress_pdf raised an unexpected exception: {e}")
     # check if the output file exists

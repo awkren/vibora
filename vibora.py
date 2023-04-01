@@ -25,14 +25,15 @@ def pdf_to_png(pdf_path):
     images[i].save('page' + str(i) + '.png')
 
 # convert pdf to text
+# convert pdf to text
 def pdf_to_text(pdf_path):
-  reader = PdfReader(pdf_path)
-  page = reader.pages[0]
-  original_stdout = sys.stdout
-  with open('file.txt', 'w') as f:
-    sys.stdout = f
-    print(page.extract_text())
-    sys.stdout = original_stdout
+    reader = PdfReader(pdf_path)
+    original_stdout = sys.stdout
+    with open('file.txt', 'w', encoding='utf-8') as f:
+        sys.stdout = f
+        for page in reader.pages:
+            print(page.extract_text())
+        sys.stdout = original_stdout
 
 # extract imgs from pdf
 def extract_img_from_pdf(pdf_path):
