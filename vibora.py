@@ -10,6 +10,8 @@ import fitz
 import io
 from PIL import Image
 from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
+from fpdf import FPDF
+import codecs
 
 # convert pdf to png
 def pdf_to_png(pdf_path):
@@ -18,7 +20,7 @@ def pdf_to_png(pdf_path):
   for i in range(len(images)):
     images[i].save('page' + str(i) + '.png')
 
-# convert pdf to text
+# convert pdf to text file
 def pdf_to_text(pdf_path):
     reader = PdfReader(pdf_path)
     original_stdout = sys.stdout
@@ -27,6 +29,20 @@ def pdf_to_text(pdf_path):
         for page in reader.pages:
             print(page.extract_text())
         sys.stdout = original_stdout
+
+# convert text file to pdf
+def txt_to_pdf(txt_path):
+  pdf = FPDF()
+  pdf.add_page()
+  pdf.set_font("Arial", size=12)
+  with codecs.open(txt_path, 'r', encoding='utf-8') as f:
+    for line in f:
+      encoded_line = line.encode('latin-1', 'replace').decode('latin-1')
+      # using cell() make text overflow depending on the text from the .txt file,
+      # as it follows the formatting of the .txt file, ignoring line breaking, etc..
+      #  use multi_cell() instead
+      pdf.multi_cell(0,10,txt=encoded_line, align='J')
+  pdf.output('myfile.pdf')
 
 # extract imgs from pdf
 def extract_img_from_pdf(pdf_path):
@@ -92,7 +108,7 @@ if __name__ == '__main__':
     
     # convert pdf to text
     # e.g. vibora pdf2text file.pdf
-    if command == 'pdf2text':
+    if command == 'pdf2txt':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -133,6 +149,16 @@ if __name__ == '__main__':
       print('Compressing your file, just a second...')
       time.sleep(2)
       print('All done! File compressed')
+
+    # convert txt to pdf
+    if command == 'txt2pdf':
+      txt_path = sys.argv[2]
+      # check if the file exists
+      file_exists = os.path.isfile(txt_path)
+      if not file_exists:
+        print("File not found. Is the path correct?")
+        exit()
+      txt_to_pdf(txt_path)      
 
     # case command doesn't exist
     else:

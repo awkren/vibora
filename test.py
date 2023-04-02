@@ -1,8 +1,9 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf
 import glob # used to delete all images when pdf has multiple pages (pdf2png function)
+import codecs
 
 class ViboraTesting(unittest.TestCase):
 
@@ -35,6 +36,18 @@ class ViboraTesting(unittest.TestCase):
     # Delete the test files
     os.remove('file.txt')
   
+  # testing txt file to pdf
+  def test_txt_to_pdf(self):
+    try:
+      # call the txt_to_pdf function with testpaper3.txt file
+      txt_to_pdf('testpaper3.txt')
+    except Exception as e:
+      self.fail(f"txt_to_pdf raised an unexpected exception: {e}")
+    # check if file exists
+    self.assertTrue(os.path.exists('myfile.pdf'))
+    # delete test files
+    os.remove('myfile.pdf')
+
   # testing extract img from pdf
   def test_img_from_pdf(self):
     try:
