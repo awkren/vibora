@@ -9,22 +9,15 @@ import sys
 import fitz
 import io
 from PIL import Image
-from pdf2image.exceptions import (
-    PDFInfoNotInstalledError,
-    PDFPageCountError,
-    PDFSyntaxError,
-    PDFPopplerTimeoutError
-)
+from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
 
-# convert pdf to png function
+# convert pdf to png
 def pdf_to_png(pdf_path):
   # example: images = convert_from_path(r'C:/path/to/file.pdf')
   images = convert_from_path(pdf_path)
   for i in range(len(images)):
-    # this is the name of converted file. change that later, too weird a file always called page[number]
     images[i].save('page' + str(i) + '.png')
 
-# convert pdf to text
 # convert pdf to text
 def pdf_to_text(pdf_path):
     reader = PdfReader(pdf_path)
@@ -47,11 +40,9 @@ def extract_img_from_pdf(pdf_path):
       base_image = pdf_file.extract_image(xref)
       image_bytes = base_image["image"]
       image_ext = base_image["ext"]
-      # image_name = f"page_{page_index}_image_{image_index}.{image_ext}"
       image_name = f"img{image_index}.{image_ext}"
       with open(image_name, "wb") as f:
         f.write(image_bytes)
-      # print(f"Saving {image_name}")
   
 # pypdf2 loseless compression
 def compress_pdf(pdf_path):
@@ -64,10 +55,10 @@ def compress_pdf(pdf_path):
     writer.write(f)
 
 if __name__ == '__main__':
-  # case we type python main.py
+  # case we type only vibora
   if len(sys.argv) == 1:
     print("Missign arguments, see 'vibora help' for reference on how to use it!")
-  # case we type python main.py help
+  # case we type vibora help
   elif sys.argv[1].lower() == 'help':
     print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!')
     print("\nPDF TO PNG:\n   To convert a .PDF to .PNG, use: 'vibora pdf2png [file].pdf'")
@@ -81,11 +72,11 @@ if __name__ == '__main__':
     exit()
   # case we actually pass a valid argument
   else:
-    # a command is the arg after the filename. e.g. python main.py pdf2png(command) [filename]
+    # a command is the arg after the filename. e.g. vibora pdf2png(command) [filename]
     command = sys.argv[1].lower()
     
     # convert pdf to png
-    # e.g. python main.py pdf2png | note that it expects a file! -> python main.py pdf2png file.pdf
+    # e.g. vibora pdf2png file.pdf
     if command == 'pdf2png':
       pdf_path = sys.argv[2]
       # check if file exists
@@ -100,7 +91,7 @@ if __name__ == '__main__':
       exit()
     
     # convert pdf to text
-    # e.g. python main.py pdf2text | note that it expects a file! -> python main.py pdf2text file.pdf
+    # e.g. vibora pdf2text file.pdf
     if command == 'pdf2text':
       pdf_path = sys.argv[2]
       # check if file exists
@@ -115,6 +106,7 @@ if __name__ == '__main__':
       exit()
 
     # extract imgs from pdf
+    # e.g. vibora extractimg file.pdf
     if command == 'extractimg':
       pdf_path = sys.argv[2]
       # check if file exists
@@ -124,12 +116,12 @@ if __name__ == '__main__':
         exit()
       extract_img_from_pdf(pdf_path)
       time.sleep(2)
-      # print('Extracting images from the file you provided')
       print("Just a second...")
       print("All done! Images extracted")
       exit()
 
     # compress pdf
+    # e.g. vibora compress file.pdf
     if command == 'compress':
       pdf_path = sys.argv[2]
       # check if file exists
@@ -142,5 +134,6 @@ if __name__ == '__main__':
       time.sleep(2)
       print('All done! File compressed')
 
+    # case command doesn't exist
     else:
       print("Command not recognized. Use 'vibora help' to see all the available commands")
