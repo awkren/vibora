@@ -1,8 +1,8 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf
-import glob # used to delete all images when pdf has multiple pages (pdf2png function)
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf
+import glob
 import codecs
 
 class ViboraTesting(unittest.TestCase):
@@ -10,7 +10,7 @@ class ViboraTesting(unittest.TestCase):
   # testing pdf to png
   def test_pdf_to_png(self):
     try:
-      # call the pdf_to_png function with tompaper.pdf file
+      # call the pdf_to_png function with testpaper1.pdf file
       pdf_to_png('testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_png raised an unexpected exception: {e}")
@@ -23,7 +23,7 @@ class ViboraTesting(unittest.TestCase):
   # testing pdf to text
   def test_pdf_to_text(self):
     try:
-      # call the pdf_to_text function with tompaper.pdf file
+      # call the pdf_to_text function with testpaper1.pdf file
       pdf_to_text('testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_text raised an unexpected exception: {e}")
@@ -51,7 +51,7 @@ class ViboraTesting(unittest.TestCase):
   # testing extract img from pdf
   def test_img_from_pdf(self):
     try:
-      # call the extract_img_from_pdf function with dummy.pdf file
+      # call the extract_img_from_pdf function with testpaper2.pdf file
       extract_img_from_pdf('testpaper2.pdf')
     except Exception as e:
       self.fail(f"extract_img_from_pdf raised an unexpected exception: {e}")
@@ -64,7 +64,7 @@ class ViboraTesting(unittest.TestCase):
   # testing compress pdf
   def test_compress_pdf(self):
     try:
-      #call the compress_pdf function with tompaper.pdf file
+      #call the compress_pdf function with testpaper1.pdf file
       compress_pdf('testpaper1.pdf')
     except Exception as e:
       self.fail(f"compress_pdf raised an unexpected exception: {e}")
@@ -72,6 +72,18 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test files
     os.remove('file.pdf')
+
+  # testing merge pdf
+  def test_merge_pdf(self):
+    try:
+      # call the merge_pdf function with testpaper1.pdf and testpaper2.pdf files
+      merge_pdf('testpaper1.pdf', 'testpaper2.pdf')
+    except Exception as e:
+      self.fail(f"merge_pdf raised an unexpected exception: {e}")
+    # check if the output file exists
+    self.assertTrue(os.path.exists('merged_pdf.pdf'))
+    # delete test file
+    os.remove('merged_pdf.pdf')
 
 if __name__ == '__main__':
   unittest.main()
