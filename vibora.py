@@ -2,7 +2,7 @@
 # go to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
 
 from pdf2image import convert_from_path, convert_from_bytes
-from PyPDF2 import PdfReader, PdfWriter
+from PyPDF2 import PdfReader, PdfWriter, PdfMerger
 import os
 import time
 import sys
@@ -22,13 +22,13 @@ def pdf_to_png(pdf_path):
 
 # convert pdf to text file
 def pdf_to_text(pdf_path):
-    reader = PdfReader(pdf_path)
-    original_stdout = sys.stdout
-    with open('file.txt', 'w', encoding='utf-8') as f:
-        sys.stdout = f
-        for page in reader.pages:
-            print(page.extract_text())
-        sys.stdout = original_stdout
+  reader = PdfReader(pdf_path)
+  original_stdout = sys.stdout
+  with open('file.txt', 'w', encoding='utf-8') as f:
+    sys.stdout = f
+    for page in reader.pages:
+      print(page.extract_text())
+    sys.stdout = original_stdout
 
 # convert text file to pdf
 def txt_to_pdf(txt_path):
@@ -69,6 +69,15 @@ def compress_pdf(pdf_path):
     writer.add_page(page)
   with open("file.pdf", 'wb') as f:
     writer.write(f)
+
+# merge pdf files
+def merge_pdf(file_one, file_two):
+  merger = PdfMerger()
+  pdf_files = [file_one, file_two]
+  for pdf_file in pdf_files:
+    merger.append(pdf_file)
+  merger.write("merged_pdf.pdf")
+  merger.close()
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -159,6 +168,20 @@ if __name__ == '__main__':
         print("File not found. Is the path correct?")
         exit()
       txt_to_pdf(txt_path)      
+
+    # merge pdfs into one pdf
+    if command == 'merge':
+      file_one = sys.argv[2]
+      file_two = sys.argv[3]
+      # check if file exists
+      file_one_exists = os.path.isfile(file_one)
+      file_two_exists = os.path.isfile(file_two)
+      if not file_one_exists or not file_two_exists:
+        print("Couldn't find the files. Did you type correctly?")
+        exit()
+      print("Merging your files... Just a second.")
+      time.sleep(3)
+      merge_pdf(file_one, file_two)
 
     # case command doesn't exist
     else:
