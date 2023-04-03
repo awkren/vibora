@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file
 import glob
 import codecs
 
@@ -84,6 +84,17 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('merged_pdf.pdf'))
     # delete test file
     os.remove('merged_pdf.pdf')
+
+  # testing rename files
+  def test_rename_file(self):
+    try:
+      # call the rename_file function with the antigo.pdf file
+      rename_file('testpaper4.txt', 'new.txt')
+    except Exception as e:
+      self.fail(f"rename_file raised an unexpected exception: {e}")
+    # check fi the outfile file exists and match the name we changed
+    self.assertTrue(os.path.exists('new.txt'))
+    rename_file('new.txt', 'testpaper4.txt')
 
 if __name__ == '__main__':
   unittest.main()

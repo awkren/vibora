@@ -79,6 +79,10 @@ def merge_pdf(file_one, file_two):
   merger.write("merged_pdf.pdf")
   merger.close()
 
+# rename files
+def rename_file(file, new_name):
+  os.rename(file, new_name)
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -94,6 +98,10 @@ if __name__ == '__main__':
     print('   You will be prompted with the amount of images found, and if you want to proceed or not.')
     print("\nCOMPRESS PDF:\n   To compress a .PDF file, use: 'vibora compress [file].pdf'")
     print('   It will try to compress your file without losing quality or removing content.')
+    print("\nTXT TO PDF:\n   To convert a .TXT file to .PDF, use: 'vibora txt2pdf [file].txt'")
+    print('   It will convert a .txt file into .pdf.')
+    print("\nMERGE PDFs:\n   To merge two .PDF files into one .PDF, use: 'vibora merge [file1].pdf [file2].pdf'")
+    print('   It will merge the two files provided, without losing quality or cutting content.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -182,6 +190,17 @@ if __name__ == '__main__':
       print("Merging your files... Just a second.")
       time.sleep(3)
       merge_pdf(file_one, file_two)
+
+    # rename files
+    if command == 'rename':
+      file = sys.argv[2]
+      new_name = sys.argv[3]
+      # check if file exists
+      file_exists = os.path.isfile(file)
+      if not file_exists:
+        print("File not found. Is the path correct?")
+        exit()
+      rename_file(file, new_name)
 
     # case command doesn't exist
     else:
