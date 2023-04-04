@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf
 import glob
 import codecs
 import shutil
@@ -121,6 +121,19 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
+  
+  # testing split pdf
+  def test_split_pdf(self):
+    try:
+      # call the split_pdf function with the testpaper1.pdf file
+      split_pdf('testfiles/testpaper1.pdf')
+    except Exception as e:
+      self.fail(f"split_pdf raised an unexpected exception: {e}")
+    # check the output file
+    self.assertTrue(os.path.exists('testpaper1_page_1.pdf'))
+    # delete test files
+    for file in glob.glob('*.pdf'):
+      os.remove(file)
 
 if __name__ == '__main__':
   unittest.main()
