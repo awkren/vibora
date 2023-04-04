@@ -13,6 +13,7 @@ from PIL import Image
 from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
 from fpdf import FPDF
 import codecs
+import img2pdf
 
 # convert pdf to png
 def pdf_to_png(pdf_path):
@@ -93,6 +94,15 @@ def rotate_pdf(pdf_path):
     writer.add_page(page)
   with open('file.pdf', 'wb') as pdf_out:
     writer.write(pdf_out)
+
+# convert image to pdf
+def image_to_pdf(img_path):
+  image = Image.open(img_path)
+  pdf_bytes = img2pdf.convert(image.filename)
+  file = open('file.pdf', 'wb')
+  file.write(pdf_bytes)
+  image.close()
+  file.close()
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -220,7 +230,27 @@ if __name__ == '__main__':
     # rotate pdf
     if command == 'rotate':
       pdf_path = sys.argv[2]
+      # check if file exists
+      file_exists = os.path.isfile(pdf_path)
+      if not file_exists:
+        print("File not found. Is the path correct?")
+        exit()
+      print("Rotating your file... Just a second.")
+      time.sleep(3)
       rotate_pdf(pdf_path)
+      print("File rotated!")
+    
+    # image to pdf
+    if command == 'img2pdf':
+      img_path = sys.argv[2]
+      file_exists = os.path.isfile(img_path)
+      if not file_exists:
+        print("File not found. Is the path correct?")
+        exit()
+      print("Converting your file... Just a second.")
+      time.sleep(3)
+      image_to_pdf(img_path)
+      print("File converted")
 
     # case command doesn't exist
     else:
