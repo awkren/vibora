@@ -4,6 +4,7 @@
 from pdf2image import convert_from_path, convert_from_bytes
 from PyPDF2 import PdfReader, PdfWriter, PdfMerger
 import os
+from os import listdir
 import time
 import sys
 import fitz
@@ -83,6 +84,16 @@ def merge_pdf(file_one, file_two):
 def rename_file(file, new_name):
   os.rename(file, new_name)
 
+# rotate pdf file
+def rotate_pdf(pdf_path):
+  reader = PdfReader(pdf_path)
+  writer = PdfWriter()
+  for page in reader.pages:
+    page.rotate(90)
+    writer.add_page(page)
+  with open('file.pdf', 'wb') as pdf_out:
+    writer.write(pdf_out)
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -102,6 +113,10 @@ if __name__ == '__main__':
     print('   It will convert a .txt file into .pdf.')
     print("\nMERGE PDFs:\n   To merge two .PDF files into one .PDF, use: 'vibora merge [file1].pdf [file2].pdf'")
     print('   It will merge the two files provided, without losing quality or cutting content.')
+    print("\nRENAME FILES:\n   To rename files using vibora, you can use: 'vibora rename [file].pdf [newname].pdf'")
+    print('   It will change the name of the file you provided, with the name you typed after it, without affecting th file.')
+    print("\nROTATE PDF:\n   To rotate a .PDF file, you can you can use: 'vibora rotate [file].pdf'")
+    print('   It will rotate you file by 90º. Depending on your file, you may want to rotate it multiple times.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -201,6 +216,11 @@ if __name__ == '__main__':
         print("File not found. Is the path correct?")
         exit()
       rename_file(file, new_name)
+
+    # rotate pdf
+    if command == 'rotate':
+      pdf_path = sys.argv[2]
+      rotate_pdf(pdf_path)
 
     # case command doesn't exist
     else:

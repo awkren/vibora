@@ -1,9 +1,10 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf
 import glob
 import codecs
+import shutil
 
 class ViboraTesting(unittest.TestCase):
 
@@ -11,7 +12,7 @@ class ViboraTesting(unittest.TestCase):
   def test_pdf_to_png(self):
     try:
       # call the pdf_to_png function with testpaper1.pdf file
-      pdf_to_png('testpaper1.pdf')
+      pdf_to_png('testfiles/testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_png raised an unexpected exception: {e}")
     # check if the output file exists
@@ -24,7 +25,7 @@ class ViboraTesting(unittest.TestCase):
   def test_pdf_to_text(self):
     try:
       # call the pdf_to_text function with testpaper1.pdf file
-      pdf_to_text('testpaper1.pdf')
+      pdf_to_text('testfiles/testpaper1.pdf')
     except Exception as e:
       self.fail(f"pdf_to_text raised an unexpected exception: {e}")
     # check if the output file exists
@@ -40,7 +41,7 @@ class ViboraTesting(unittest.TestCase):
   def test_txt_to_pdf(self):
     try:
       # call the txt_to_pdf function with testpaper3.txt file
-      txt_to_pdf('testpaper3.txt')
+      txt_to_pdf('testfiles/testpaper3.txt')
     except Exception as e:
       self.fail(f"txt_to_pdf raised an unexpected exception: {e}")
     # check if file exists
@@ -52,7 +53,7 @@ class ViboraTesting(unittest.TestCase):
   def test_img_from_pdf(self):
     try:
       # call the extract_img_from_pdf function with testpaper2.pdf file
-      extract_img_from_pdf('testpaper2.pdf')
+      extract_img_from_pdf('testfiles/testpaper2.pdf')
     except Exception as e:
       self.fail(f"extract_img_from_pdf raised an unexpected exception: {e}")
     # check if the output file exists
@@ -65,7 +66,7 @@ class ViboraTesting(unittest.TestCase):
   def test_compress_pdf(self):
     try:
       #call the compress_pdf function with testpaper1.pdf file
-      compress_pdf('testpaper1.pdf')
+      compress_pdf('testfiles/testpaper1.pdf')
     except Exception as e:
       self.fail(f"compress_pdf raised an unexpected exception: {e}")
     # check if the output file exists
@@ -77,7 +78,7 @@ class ViboraTesting(unittest.TestCase):
   def test_merge_pdf(self):
     try:
       # call the merge_pdf function with testpaper1.pdf and testpaper2.pdf files
-      merge_pdf('testpaper1.pdf', 'testpaper2.pdf')
+      merge_pdf('testfiles/testpaper1.pdf', 'testfiles/testpaper2.pdf')
     except Exception as e:
       self.fail(f"merge_pdf raised an unexpected exception: {e}")
     # check if the output file exists
@@ -89,12 +90,25 @@ class ViboraTesting(unittest.TestCase):
   def test_rename_file(self):
     try:
       # call the rename_file function with the antigo.pdf file
-      rename_file('testpaper4.txt', 'new.txt')
+      rename_file('testfiles/testpaper4.txt', 'new.txt')
     except Exception as e:
       self.fail(f"rename_file raised an unexpected exception: {e}")
     # check fi the outfile file exists and match the name we changed
     self.assertTrue(os.path.exists('new.txt'))
     rename_file('new.txt', 'testpaper4.txt')
+    shutil.move('testpaper4.txt', 'testfiles/testpaper4.txt')
+  
+  # testing rotate files
+  def test_rotate_pdf(self):
+    try:
+      # call the rotate_pdf funtion with the rotate.pdf file
+      rotate_pdf('testfiles/rotate.pdf')
+    except Exception as e:
+      self.fail(f"rotate_pdf raised an unexpected exception: {e}")
+    # check if output file matches with result
+    self.assertTrue(os.path.exists('file.pdf'))
+    # delete test file
+    os.remove('file.pdf')
 
 if __name__ == '__main__':
   unittest.main()
