@@ -1,13 +1,12 @@
 body{
   background-color: #ccc5b9;
-  text-align: center;
   font-family: sans-serif
 }
 
 img{
-  width: 300px;
+  width: 200px;
 }
 
-#text1{
-  font-size: 1.3rem;
+p{
+  font-size: 1.2rem;
 }
