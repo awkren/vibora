@@ -3,3 +3,4 @@ pypdf2
 pymupdf
 fitz
 fpdf
+img2pdf

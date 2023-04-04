@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf
 import glob
 import codecs
 import shutil
@@ -106,6 +106,18 @@ class ViboraTesting(unittest.TestCase):
     except Exception as e:
       self.fail(f"rotate_pdf raised an unexpected exception: {e}")
     # check if output file matches with result
+    self.assertTrue(os.path.exists('file.pdf'))
+    # delete test file
+    os.remove('file.pdf')
+
+  # testing image to pdf
+  def test_image_to_pdf(self):
+    try:
+      # call the image_to_pdf function with the testfile.png file
+      image_to_pdf('testfiles/testfile.png')
+    except Exception as e:
+      self.fail(f"image_to_pdf raised an unexpected exception: {e}")
+    # check if the output file exists
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
