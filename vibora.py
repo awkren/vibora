@@ -104,6 +104,22 @@ def image_to_pdf(img_path):
   image.close()
   file.close()
 
+# split pdf pages
+def split_pdf(pdf_path):
+  fname = os.path.splitext(os.path.basename(pdf_path))[0]
+  pdf = PdfReader(pdf_path)
+  if len(pdf.pages) == 1:
+    print("File has 1 page, can't split it.")
+    exit()
+  else:
+    for page in range(len(pdf.pages)):
+      pdf_writer = PdfWriter()
+      pdf_writer.add_page(pdf.pages[page])
+      output_filename = '{}_page_{}.pdf'.format(
+        fname, page + 1)
+      with open(output_filename, 'wb') as out:
+        pdf_writer.write(out)
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -127,6 +143,10 @@ if __name__ == '__main__':
     print('   It will change the name of the file you provided, with the name you typed after it, without affecting th file.')
     print("\nROTATE PDF:\n   To rotate a .PDF file, you can you can use: 'vibora rotate [file].pdf'")
     print('   It will rotate you file by 90º. Depending on your file, you may want to rotate it multiple times.')
+    print("\nIMAGE TO PDF:\n   To convert an image to a .PDF file, you can you can use: 'vibora img2pdf [file].[extension]'")
+    print('   It can convert multiple image formats into a .PDF file.')
+    print("\nSPLIT PDF:\n   To split a .PDF file into separated pages, you can you can use: 'vibora split [file].pdf'")
+    print('   It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -243,6 +263,7 @@ if __name__ == '__main__':
     # image to pdf
     if command == 'img2pdf':
       img_path = sys.argv[2]
+      # check if file exists
       file_exists = os.path.isfile(img_path)
       if not file_exists:
         print("File not found. Is the path correct?")
@@ -251,6 +272,19 @@ if __name__ == '__main__':
       time.sleep(3)
       image_to_pdf(img_path)
       print("File converted")
+  
+    # split pdf
+    if command == 'split':
+      pdf_path = sys.argv[2]
+      # check if file exists
+      file_exists = os.path.isfile(pdf_path)
+      if not file_exists:
+        print("File not found. Is the path correct?")
+        exit()
+      split_pdf(pdf_path)
+      print("Spliting your pdf files... Just a second.")
+      time.sleep(3)
+      print("PDF split into separated pages")
 
     # case command doesn't exist
     else:
