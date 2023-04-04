@@ -120,6 +120,19 @@ def split_pdf(pdf_path):
       with open(output_filename, 'wb') as out:
         pdf_writer.write(out)
 
+# watermark pdf
+def watermark_pdf(pdf_path, watermark):
+  watermark_instance = PdfReader(watermark)
+  watermark_page = watermark_instance.pages[0]
+  pdf_reader = PdfReader(pdf_path)
+  pdf_writer = PdfWriter()
+  for page in range(len(pdf_reader.pages)):
+    page = pdf_reader.pages[page]
+    page.merge_page(watermark_page)
+    pdf_writer.add_page(page)
+  with open('watermarked.pdf', 'wb') as out:
+    pdf_writer.write(out)
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -147,6 +160,8 @@ if __name__ == '__main__':
     print('   It can convert multiple image formats into a .PDF file.')
     print("\nSPLIT PDF:\n   To split a .PDF file into separated pages, you can you can use: 'vibora split [file].pdf'")
     print('   It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.')
+    print("\nWATERMARK PDF:\n   To add watermark to a a .PDF file, you can you can use: 'vibora watermark [file].pdf [watermarkfile].pdf'")
+    print('   It will add a watermark to the bottom left of the .PDF file. Remember that the watermark must also be a .PDF file.')
     exit()
   # case we actually pass a valid argument
   else:
@@ -285,6 +300,12 @@ if __name__ == '__main__':
       print("Spliting your pdf files... Just a second.")
       time.sleep(3)
       print("PDF split into separated pages")
+
+    if command == 'watermark':
+      pdf_path = sys.argv[2]
+      watermark = sys.argv[3]
+      # check if file exists
+      watermark_pdf(pdf_path, watermark)
 
     # case command doesn't exist
     else:
