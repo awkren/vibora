@@ -151,7 +151,7 @@ class ViboraTesting(unittest.TestCase):
   def test_encrypt_pdf(self):
     try:
       # call the encrypt_pdf function with testpaper1.pdf file
-      encrypt_pdf("testfiles/testpaper1.pdf")
+      encrypt_pdf("testfiles/testpaper1.pdf", 'passman')
     except Exception as e:
       self.fail(f"encrypt_pdf raised an unexpected exception: {e}")
     # check the output file
@@ -163,8 +163,8 @@ class ViboraTesting(unittest.TestCase):
   def test_decrypt_pdf(self):
     try:
       # call the decrypt_pdf function with the encrypted file.pdf file
-      encrypt_pdf("testfiles/testpaper1.pdf")
-      decrypt_pdf("file.pdf")
+      encrypt_pdf("testfiles/testpaper1.pdf", 'passman')
+      decrypt_pdf("file.pdf", 'passman')
     except Exception as e:
       self.fail(f"decrypt_pdf raised an unexpected exception: {e}")
     # check the output file
