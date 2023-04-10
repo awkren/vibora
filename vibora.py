@@ -146,6 +146,22 @@ def encrypt_pdf(pdf_path):
   with open("file.pdf", 'wb') as f:
     out.write(f)
 
+# decrypt a pdf file
+# IT DOESNT CRACK A PDF FILE!, IT WILL DECRYPT A PDF YOU HAVE THE PASSWORD WITH YOU
+def decrypt_pdf(pdf_path):
+  out = PdfWriter()
+  file = PdfReader(pdf_path)
+  password = "pass"
+  if file.is_encrypted:
+    file.decrypt(password)
+    for idx in range(len(file.pages)):
+      page = file.pages[idx]
+      out.add_page(page)
+    with open("file_decrypted.pdf", "wb") as f:
+      out.write(f)
+  else:
+    print("File is not encrypted")
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -323,6 +339,10 @@ if __name__ == '__main__':
     if command  == 'encrypt':
       pdf_path = sys.argv[2]
       encrypt_pdf(pdf_path)
+
+    if command == 'decrypt':
+      pdf_path = sys.argv[2]
+      decrypt_pdf(pdf_path)
 
     # case command doesn't exist
     else:
