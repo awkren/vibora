@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf
 import glob
 import codecs
 import shutil
@@ -150,14 +150,28 @@ class ViboraTesting(unittest.TestCase):
   # testing encrypt pdf
   def test_encrypt_pdf(self):
     try:
-      # call the encrypt pdf function with testpaper1.pdf file
+      # call the encrypt_pdf function with testpaper1.pdf file
       encrypt_pdf("testfiles/testpaper1.pdf")
     except Exception as e:
-      self.fail(f"encrypt_pdf raised an unexpectede exception: {e}")
+      self.fail(f"encrypt_pdf raised an unexpected exception: {e}")
     # check the output file
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
+  
+  # testing decrypt pdf
+  def test_decrypt_pdf(self):
+    try:
+      # call the decrypt_pdf function with the encrypted file.pdf file
+      encrypt_pdf("testfiles/testpaper1.pdf")
+      decrypt_pdf("file.pdf")
+    except Exception as e:
+      self.fail(f"decrypt_pdf raised an unexpected exception: {e}")
+    # check the output file
+    self.assertTrue(os.path.exists('file_decrypted.pdf'))
+    # delete test files
+    for file in glob.glob('*.pdf'):
+      os.remove(file)
 
 if __name__ == '__main__':
   unittest.main()
