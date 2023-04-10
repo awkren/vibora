@@ -134,25 +134,24 @@ def watermark_pdf(pdf_path, watermark):
     pdf_writer.write(out)
 
 # encrypt a pdf file
-def encrypt_pdf(pdf_path):
+def encrypt_pdf(pdf_path, password):
   out = PdfWriter()
   file = PdfReader(pdf_path)
   num = len(file.pages)
   for idx in range(num):
     page = file.pages[idx]
     out.add_page(page)
-  password = "pass"
   out.encrypt(password)
   with open("file.pdf", 'wb') as f:
     out.write(f)
 
 # decrypt a pdf file
 # IT DOESNT CRACK A PDF FILE!, IT WILL DECRYPT A PDF YOU HAVE THE PASSWORD WITH YOU
-def decrypt_pdf(pdf_path):
+def decrypt_pdf(pdf_path, password):
   out = PdfWriter()
   file = PdfReader(pdf_path)
-  password = "pass"
   if file.is_encrypted:
+    # ADD INCORRECT PASSWORD PROMPT LATER
     file.decrypt(password)
     for idx in range(len(file.pages)):
       page = file.pages[idx]
@@ -330,19 +329,24 @@ if __name__ == '__main__':
       time.sleep(3)
       print("PDF split into separated pages")
 
+    # add watermark to pdf
     if command == 'watermark':
       pdf_path = sys.argv[2]
       watermark = sys.argv[3]
       # check if file exists
       watermark_pdf(pdf_path, watermark)
     
+    # encrypt a pdf file
     if command  == 'encrypt':
       pdf_path = sys.argv[2]
-      encrypt_pdf(pdf_path)
+      password = sys.argv[3]
+      encrypt_pdf(pdf_path, password)
 
+    # decrypt a pdf file
     if command == 'decrypt':
       pdf_path = sys.argv[2]
-      decrypt_pdf(pdf_path)
+      password = sys.argv[3]
+      decrypt_pdf(pdf_path, password)
 
     # case command doesn't exist
     else:
