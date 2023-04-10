@@ -133,6 +133,19 @@ def watermark_pdf(pdf_path, watermark):
   with open('watermarked.pdf', 'wb') as out:
     pdf_writer.write(out)
 
+# encrypt a pdf file
+def encrypt_pdf(pdf_path):
+  out = PdfWriter()
+  file = PdfReader(pdf_path)
+  num = len(file.pages)
+  for idx in range(num):
+    page = file.pages[idx]
+    out.add_page(page)
+  password = "pass"
+  out.encrypt(password)
+  with open("file.pdf", 'wb') as f:
+    out.write(f)
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -306,6 +319,10 @@ if __name__ == '__main__':
       watermark = sys.argv[3]
       # check if file exists
       watermark_pdf(pdf_path, watermark)
+    
+    if command  == 'encrypt':
+      pdf_path = sys.argv[2]
+      encrypt_pdf(pdf_path)
 
     # case command doesn't exist
     else:
