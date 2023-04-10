@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf
 import glob
 import codecs
 import shutil
@@ -138,7 +138,7 @@ class ViboraTesting(unittest.TestCase):
   # testing watermark pdf
   def test_watermark_pdf(self):
     try:
-      # call the watermark_pdf function with testpaper2.pdf and file.pdf files
+      # call the watermark_pdf function with testpaper1.pdf and file.pdf files
       watermark_pdf('testfiles/testpaper1.pdf', 'testfiles/file.pdf')
     except Exception as e:
       self.fail(f"watermark_pdf raised an unexpected exception: {e}")
@@ -146,6 +146,18 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('watermarked.pdf'))
     # delete test files
     os.remove('watermarked.pdf')
+  
+  # testing encrypt pdf
+  def test_encrypt_pdf(self):
+    try:
+      # call the encrypt pdf function with testpaper1.pdf file
+      encrypt_pdf("testfiles/testpaper1.pdf")
+    except Exception as e:
+      self.fail(f"encrypt_pdf raised an unexpectede exception: {e}")
+    # check the output file
+    self.assertTrue(os.path.exists('file.pdf'))
+    # delete test file
+    os.remove('file.pdf')
 
 if __name__ == '__main__':
   unittest.main()

@@ -1,7 +1,6 @@
 vibora/
 viper/
 poppler-23.01.0/
-testfile.pdf
 sample1img.pdf
 sample2img.pdf
 sampleimg.pdf
@@ -11,3 +10,6 @@ tompaper.pdf
 dummy.pdf
 docs/
 docs
+build/
+dist/
+vibora.spec
