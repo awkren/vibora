@@ -2,9 +2,28 @@
   <img width='300px' src='docs/assets/realfang.png'/>
 </div>
 
-<h1 align=center>Introducing vibora, a PDF utility CLI tool.</h1>
+<h1 align=center><b>vibora</b>, a PDF manipulation tool.</h1>
 
-#### With only one line of code, you can easily and quickly convert PDF files into PNG, extract text from your PDF files and more!
+## With just one line you can convert a .PDF file to .PNG, .PNG to .PDF, merge files, encrypt and much more.
+<hr>
 
-#### I'm constantly updating vibora to add new features and improve its functionality. Try vibora to simplify your PDF conversion needs or what else you want to do.
+#### *vibora is working, but it's still an unstable tool. That means that you can use but, you might find some bugs. And if you do, feel free to open an Issue here.*
+<hr>
 
+## How to use it:
+
+Clone the repo to your machine:
+```
+git clone https://github.com/wuzue/vibora
+```
+Make sure to install the required dependencies. They are located in the ```requirements.txt``` file.
+```
+pip install -r requirements.txt
+```
+Now just run the ```vibora.py``` file to see what you can do with vibora:
+```
+python vibora.py help
+```
+
+
+*If you are using Windows, you can go to the releases and follow the instructions there. But I highly recommend you to follow this tutorial instead.*

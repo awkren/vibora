@@ -193,6 +193,10 @@ if __name__ == '__main__':
     print('   It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.')
     print("\nWATERMARK PDF:\n   To add watermark to a a .PDF file, you can you can use: 'vibora watermark [file].pdf [watermarkfile].pdf'")
     print('   It will add a watermark to the bottom left of the .PDF file. Remember that the watermark must also be a .PDF file.')
+    print("\nENCRYPT PDF:\n   To encrypt a .PDF file, you can you can use: 'vibora encrypt [file].pdf [password]'")
+    print('   It will encrypt a .pdf file by adding a password to be able to read its content.')
+    print("\nDECRYPT PDF:\n   To decrypt a .PDF file, you can you can use: 'vibora decrypt [file].pdf [password]'")
+    print("   It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.")
     exit()
   # case we actually pass a valid argument
   else:
