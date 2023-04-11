@@ -216,7 +216,7 @@ if __name__ == '__main__':
     
     # convert pdf to text
     # e.g. vibora pdf2text file.pdf
-    if command == 'pdf2txt':
+    elif command == 'pdf2txt':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -231,7 +231,7 @@ if __name__ == '__main__':
 
     # extract imgs from pdf
     # e.g. vibora extractimg file.pdf
-    if command == 'extractimg':
+    elif command == 'extractimg':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -246,7 +246,7 @@ if __name__ == '__main__':
 
     # compress pdf
     # e.g. vibora compress file.pdf
-    if command == 'compress':
+    elif command == 'compress':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -259,7 +259,7 @@ if __name__ == '__main__':
       print('All done! File compressed')
 
     # convert txt to pdf
-    if command == 'txt2pdf':
+    elif command == 'txt2pdf':
       txt_path = sys.argv[2]
       # check if the file exists
       file_exists = os.path.isfile(txt_path)
@@ -269,7 +269,7 @@ if __name__ == '__main__':
       txt_to_pdf(txt_path)      
 
     # merge pdfs into one pdf
-    if command == 'merge':
+    elif command == 'merge':
       file_one = sys.argv[2]
       file_two = sys.argv[3]
       # check if file exists
@@ -283,7 +283,7 @@ if __name__ == '__main__':
       merge_pdf(file_one, file_two)
 
     # rename files
-    if command == 'rename':
+    elif command == 'rename':
       file = sys.argv[2]
       new_name = sys.argv[3]
       # check if file exists
@@ -294,7 +294,7 @@ if __name__ == '__main__':
       rename_file(file, new_name)
 
     # rotate pdf
-    if command == 'rotate':
+    elif command == 'rotate':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -307,7 +307,7 @@ if __name__ == '__main__':
       print("File rotated!")
     
     # image to pdf
-    if command == 'img2pdf':
+    elif command == 'img2pdf':
       img_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(img_path)
@@ -320,7 +320,7 @@ if __name__ == '__main__':
       print("File converted")
   
     # split pdf
-    if command == 'split':
+    elif command == 'split':
       pdf_path = sys.argv[2]
       # check if file exists
       file_exists = os.path.isfile(pdf_path)
@@ -333,22 +333,37 @@ if __name__ == '__main__':
       print("PDF split into separated pages")
 
     # add watermark to pdf
-    if command == 'watermark':
+    elif command == 'watermark':
       pdf_path = sys.argv[2]
       watermark = sys.argv[3]
-      # check if file exists
+      # check if files exists
+      pdf_exists = os.path.isfile(pdf_path)
+      watermark_exists = os.path.isfile(watermark)
+      if not pdf_exists:
+        print("PDF file not found. Is the path correct?")
+      if not watermark_exists:
+        print("Watermark file not found. Is the path correct?")
       watermark_pdf(pdf_path, watermark)
     
     # encrypt a pdf file
-    if command  == 'encrypt':
+    elif command == 'encrypt':
       pdf_path = sys.argv[2]
       password = sys.argv[3]
+      # check if file exists
+      pdf_exists = os.path.isfile(pdf_path)
+      if not pdf_exists:
+        print("File not found. Is the path correct?")
+        exit()
       encrypt_pdf(pdf_path, password)
 
     # decrypt a pdf file
-    if command == 'decrypt':
+    elif command == 'decrypt':
       pdf_path = sys.argv[2]
       password = sys.argv[3]
+      # check fi file exists
+      pdf_exists = os.path.isfile(pdf_path)
+      if not pdf_exists:
+        print("File not found. Is the paht correct?")
       decrypt_pdf(pdf_path, password)
 
     # case command doesn't exist
