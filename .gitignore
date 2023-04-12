@@ -8,8 +8,8 @@ samplecv.pdf
 __pycache__
 tompaper.pdf
 dummy.pdf
-docs/
-docs
 build/
+docs/
 dist/
 vibora.spec
+folder/
