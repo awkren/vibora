@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf
 import glob
 import codecs
 import shutil
@@ -78,13 +78,25 @@ class ViboraTesting(unittest.TestCase):
   def test_merge_pdf(self):
     try:
       # call the merge_pdf function with testpaper1.pdf and testpaper2.pdf files
-      merge_pdf('testfiles/testpaper1.pdf', 'testfiles/testpaper2.pdf')
+      merge_pdf('testfiles/testpaper1.pdf', 'testfiles/testpaper2.pdf', 'testfiles/file.pdf')
     except Exception as e:
       self.fail(f"merge_pdf raised an unexpected exception: {e}")
     # check if the output file exists
     self.assertTrue(os.path.exists('merged_pdf.pdf'))
     # delete test file
     os.remove('merged_pdf.pdf')
+
+  # testing merge directory
+  def test_merge_pdf_directory(self):
+    try:
+      # call the merge_pdf_directory function with files inside /testfiles
+      merge_pdf_directory('testfiles/')
+    except Exception as e:
+      self.fail(f"merge_pdf_directory raised an unexpected exception: {e}")
+    # check if the output file exists
+    self.assertTrue(os.path.exists('testfiles/merged_file.pdf'))
+    # delete test file
+    os.remove('testfiles/merged_file.pdf')
 
   # testing rename files
   def test_rename_file(self):
