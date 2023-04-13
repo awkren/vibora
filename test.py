@@ -1,10 +1,14 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf, audio
 import glob
 import codecs
 import shutil
+from io import StringIO
+from unittest.mock import patch
+import warnings
+warnings.filterwarnings("ignore", message=".*._SixMetaPathImporter.*")
 
 class ViboraTesting(unittest.TestCase):
 
@@ -184,6 +188,17 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('*.pdf'):
       os.remove(file)
+  
+  # testing pdf to audio
+  # skipping audio
+  def ztest_audio(self):
+    # call the audio function with the testpapervoice.pdf file
+    with patch('sys.stdout', new=StringIO()) as fake_stdout:
+      audio('testfiles/testpapervoice.pdf')
+      output = fake_stdout.getvalue().strip()
+    # check output
+    # self.assertNotEqual(output, '')
+    self.assertTrue(output != '')
 
 if __name__ == '__main__':
   unittest.main()

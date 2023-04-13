@@ -13,7 +13,10 @@ from PIL import Image
 from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
 from fpdf import FPDF
 import codecs
+import pyttsx3
+import keyboard
 import img2pdf
+import threading
 
 # convert pdf to png
 def pdf_to_png(pdf_path):
@@ -174,6 +177,31 @@ def decrypt_pdf(pdf_path, password):
   else:
     print("File is not encrypted")
 
+# pdf to audio
+def speak_text(text):
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
+
+def audio(pdf_path):
+    with open(pdf_path, 'rb') as f:
+      pdf_reader = PdfReader(f)
+      # from_page = pdf_reader.pages[3]
+      for page in pdf_reader.pages:
+        text = page.extract_text()
+      # using threading to run the engine in a separated thread, allowing us to stop the engine
+      # otherwise, pyttsx3 would run til it finishes reading...
+        t = threading.Thread(target=speak_text, args=(text,))
+        t.daemon = True
+        t.start()
+      # t.join()
+    # while True:
+    #   if keyboard.is_pressed('ctrl+c'):
+    #     sys.exit(0)
+    while True:
+      if keyboard.is_pressed('ctrl+c'):
+        break
+
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
@@ -209,12 +237,15 @@ if __name__ == '__main__':
     print('   It will encrypt a .pdf file by adding a password to be able to read its content.')
     print("\nDECRYPT PDF:\n   To decrypt a .PDF file, you can you can use: 'vibora -decrypt [file].pdf [password]'")
     print("   It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.")
+    print("\nREAD PDF FOR ME:\n   To make vibora read (yes, audio related) a .PDF file, you can you can use: 'vibora -speak [file].pdf'")
+    print("   It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
     # exit()
   # case we actually pass a valid argument
   else:
     # a command is the arg after the filename. e.g. vibora pdf2png(command) [filename]
     command = sys.argv[1].lower()
     
+    # same as switch in another languages
     match command:
 
       # convert pdf to png
@@ -377,11 +408,20 @@ if __name__ == '__main__':
       case '-decrypt':
         pdf_path = sys.argv[2]
         password = sys.argv[3]
-        # check fi file exists
+        # check if file exists
         pdf_exists = os.path.isfile(pdf_path)
         if not pdf_exists:
           print("File not found. Is the paht correct?")
         decrypt_pdf(pdf_path, password)
+      
+      case '-speak':
+        pdf_path = sys.argv[2]
+        # check if file exists
+        pdf_exists = os.path.isfile(pdf_path)
+        if not pdf_exists:
+          print("File not found. Is the path correct?")
+        print("Reading file...\nPress CTRL + C after the text is read to stop the -speak command.")
+        audio(pdf_path)
 
       # case command doesn't exist
       case _:
