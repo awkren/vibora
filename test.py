@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf, audio
+from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf, audio, Redactor
 import glob
 import codecs
 import shutil
@@ -188,9 +188,22 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('*.pdf'):
       os.remove(file)
+
+  # testing redact sensitive information from pdf
+  def test_redaction(self):
+    try:
+      # call initialize the redactor function with the sampleredaction.pdf file
+      redactor = Redactor('testfiles/sampleredaction.pdf')
+      redactor.redaction()
+    except Exception as e:
+      self.fail(f"redaction raised an unexpected exception: {e}")
+    # check the output file
+    self.assertTrue(os.path.exists('redacted.pdf'))
+    # delete test file
+    os.remove('redacted.pdf')
   
   # testing pdf to audio
-  # skipping audio
+  # skipping audio test due to six error
   def ztest_audio(self):
     # call the audio function with the testpapervoice.pdf file
     with patch('sys.stdout', new=StringIO()) as fake_stdout:

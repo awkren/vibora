@@ -8,6 +8,7 @@ from os import listdir
 import time
 import sys
 import fitz
+import re
 import io
 from PIL import Image
 from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
@@ -55,7 +56,6 @@ def extract_img_from_pdf(pdf_path):
   pdf_file = fitz.open(file)
   for page_index in range(len(pdf_file)):
     page = pdf_file[page_index]
-  
     for image_index, img in enumerate(page.get_images(), start=1):
       xref = img[0]
       base_image = pdf_file.extract_image(xref)
@@ -201,6 +201,49 @@ def audio(pdf_path):
     while True:
       if keyboard.is_pressed('ctrl+c'):
         break
+
+# redact sensitive information on pdf
+class Redactor:
+  @staticmethod
+  # function to get all the lines
+  def get_sensitive_data(lines): 
+    
+    #email regex
+    EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d]+)"
+    for line in lines:
+      # match regex to each line
+      if re.search(EMAIL_REG, line, re.IGNORECASE):
+        search =  re.search(EMAIL_REG, line, re.IGNORECASE)
+        # yields creates a generator used to return values in between function iterations
+        yield search.group(1)
+  
+  # constructor
+  def __init__(self, path):
+    self.path = path
+
+  # main redactor code
+  def redaction(self):
+
+    # opening pdf file
+    doc = fitz.open(self.path)
+    # iterating through pages
+    for page in doc:
+      # _wrapContents is used to fix alignment issues with rect boxes
+      page.wrap_contents()
+      # getting rect boxes which consists the matching email regex
+      sensitive = self.get_sensitive_data(page.get_text("text").split('\n'))
+      for data in sensitive:
+        areas = page.search_for(data)
+        # drawing outline over sensitive datas
+        [page.add_redact_annot(area, fill = (0,0,0)) for area in areas]
+
+      # applying redaction
+      page.apply_redactions()
+
+    # saving it to a new pdf
+    doc.save("redacted.pdf")
+    print("Successfully redacted")
+
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -413,7 +456,8 @@ if __name__ == '__main__':
         if not pdf_exists:
           print("File not found. Is the paht correct?")
         decrypt_pdf(pdf_path, password)
-      
+
+      # speak the pdf content      
       case '-speak':
         pdf_path = sys.argv[2]
         # check if file exists
@@ -422,6 +466,12 @@ if __name__ == '__main__':
           print("File not found. Is the path correct?")
         print("Reading file...\nPress CTRL + C after the text is read to stop the -speak command.")
         audio(pdf_path)
+
+      # redact sensitive information
+      case '-redact':
+        path = sys.argv[2]
+        redactor = Redactor(path)
+        redactor.redaction()
 
       # case command doesn't exist
       case _:
