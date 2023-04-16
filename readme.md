@@ -2,13 +2,11 @@
   <img width='300px' src='docs/assets/realfang.png'/>
 </div>
 
-<h1 align=center><b>vibora</b>, a PDF manipulation tool.</h1>
+<h1 align=center>A PDF manipulation tool.</h1>
 
-### With just one line you can convert a .PDF file to .PNG, .PNG to .PDF, merge files, encrypt and much more.
-<hr>
+<h3 align=center> With just one line you can convert a .PDF file to .PNG, .PNG to .PDF, merge files, encrypt and much more.</h3>
 
-#### *vibora is working, but it's still an unstable tool. That means that you can use but, you might find some bugs. And if you do, feel free to open an Issue here.*
-<hr>
+<hr>    
 
 ## How to use it:
 
@@ -20,10 +18,9 @@ Make sure to install the required dependencies. They are located in the ```requi
 ```
 pip install -r requirements.txt
 ```
-Now just run the ```vibora.py``` file to see what you can do with vibora:
+Now just run the ```main.py``` file to see what you can do with vibora:
 ```
-python vibora.py help
+python main.py help
 ```
 
 *Python 3.10+ required.*
-*If you are using Windows, you can go to the releases and follow the instructions there. But I highly recommend you to follow this tutorial instead.*

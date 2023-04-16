@@ -1,249 +1,23 @@
 # if you are on windows, download Poppler and add it to PATH
 # go to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
-
-from pdf2image import convert_from_path, convert_from_bytes
-from PyPDF2 import PdfReader, PdfWriter, PdfMerger
-import os
-from os import listdir
 import time
 import sys
-import fitz
-import re
-import io
-from PIL import Image
-from pdf2image.exceptions import PDFInfoNotInstalledError, PDFPageCountError, PDFSyntaxError, PDFPopplerTimeoutError
-from fpdf import FPDF
-import codecs
-import pyttsx3
-import keyboard
-import img2pdf
-import threading
 
-# convert pdf to png
-def pdf_to_png(pdf_path):
-  # example: images = convert_from_path(r'C:/path/to/file.pdf')
-  images = convert_from_path(pdf_path)
-  for i in range(len(images)):
-    images[i].save('page' + str(i) + '.png')
-
-# convert pdf to text file
-def pdf_to_text(pdf_path):
-  reader = PdfReader(pdf_path)
-  original_stdout = sys.stdout
-  with open('file.txt', 'w', encoding='utf-8') as f:
-    sys.stdout = f
-    for page in reader.pages:
-      print(page.extract_text())
-    sys.stdout = original_stdout
-
-# convert text file to pdf
-def txt_to_pdf(txt_path):
-  pdf = FPDF()
-  pdf.add_page()
-  pdf.set_font("Arial", size=12)
-  with codecs.open(txt_path, 'r', encoding='utf-8') as f:
-    for line in f:
-      encoded_line = line.encode('latin-1', 'replace').decode('latin-1')
-      # using cell() make text overflow depending on the text from the .txt file,
-      # as it follows the formatting of the .txt file, ignoring line breaking, etc..
-      #  use multi_cell() instead
-      pdf.multi_cell(0,10,txt=encoded_line, align='J')
-  pdf.output('myfile.pdf')
-
-# extract imgs from pdf
-def extract_img_from_pdf(pdf_path):
-  file = pdf_path
-  pdf_file = fitz.open(file)
-  for page_index in range(len(pdf_file)):
-    page = pdf_file[page_index]
-    for image_index, img in enumerate(page.get_images(), start=1):
-      xref = img[0]
-      base_image = pdf_file.extract_image(xref)
-      image_bytes = base_image["image"]
-      image_ext = base_image["ext"]
-      image_name = f"img{image_index}.{image_ext}"
-      with open(image_name, "wb") as f:
-        f.write(image_bytes)
-  
-# pypdf2 loseless compression
-def compress_pdf(pdf_path):
-  reader = PdfReader(pdf_path)
-  writer = PdfWriter()
-  for page in reader.pages:
-    page.compress_content_streams() # this is cpu intensive!!!
-    writer.add_page(page)
-  with open("file.pdf", 'wb') as f:
-    writer.write(f)
-
-# merge pdf files
-def merge_pdf(*pdf_files):
-  merger = PdfMerger()
-  for pdf_file in pdf_files:
-    with open(pdf_file, 'rb') as f:
-      merger.append(f)
-  merger.write("merged_pdf.pdf")
-  merger.close()
-
-# merge pdf files inside folder, ignores non .pdf files
-def merge_pdf_directory(directory_path):
-  merger = PdfMerger()
-  pdf_files = [file for file in os.listdir(directory_path) if file.endswith('.pdf')]
-  for pdf_file in pdf_files:
-    with open(os.path.join(directory_path, pdf_file), 'rb') as f:
-      merger.append(f)
-  merger.write(os.path.join(directory_path, 'merged_file.pdf'))
-  merger.close()
-    
-# rename files
-def rename_file(file, new_name):
-  os.rename(file, new_name)
-
-# rotate pdf file
-def rotate_pdf(pdf_path):
-  reader = PdfReader(pdf_path)
-  writer = PdfWriter()
-  for page in reader.pages:
-    page.rotate(90)
-    writer.add_page(page)
-  with open('file.pdf', 'wb') as pdf_out:
-    writer.write(pdf_out)
-
-# convert image to pdf
-def image_to_pdf(img_path):
-  image = Image.open(img_path)
-  pdf_bytes = img2pdf.convert(image.filename)
-  file = open('file.pdf', 'wb')
-  file.write(pdf_bytes)
-  image.close()
-  file.close()
-
-# split pdf pages
-def split_pdf(pdf_path):
-  fname = os.path.splitext(os.path.basename(pdf_path))[0]
-  pdf = PdfReader(pdf_path)
-  if len(pdf.pages) == 1:
-    print("File has 1 page, can't split it.")
-    exit()
-  else:
-    for page in range(len(pdf.pages)):
-      pdf_writer = PdfWriter()
-      pdf_writer.add_page(pdf.pages[page])
-      output_filename = '{}_page_{}.pdf'.format(
-        fname, page + 1)
-      with open(output_filename, 'wb') as out:
-        pdf_writer.write(out)
-
-# watermark pdf
-def watermark_pdf(pdf_path, watermark):
-  watermark_instance = PdfReader(watermark)
-  watermark_page = watermark_instance.pages[0]
-  pdf_reader = PdfReader(pdf_path)
-  pdf_writer = PdfWriter()
-  for page in range(len(pdf_reader.pages)):
-    page = pdf_reader.pages[page]
-    page.merge_page(watermark_page)
-    pdf_writer.add_page(page)
-  with open('watermarked.pdf', 'wb') as out:
-    pdf_writer.write(out)
-
-# encrypt a pdf file
-def encrypt_pdf(pdf_path, password):
-  out = PdfWriter()
-  file = PdfReader(pdf_path)
-  num = len(file.pages)
-  for idx in range(num):
-    page = file.pages[idx]
-    out.add_page(page)
-  out.encrypt(password)
-  with open("file.pdf", 'wb') as f:
-    out.write(f)
-
-# decrypt a pdf file
-# IT DOESNT CRACK A PDF FILE!, IT WILL DECRYPT A PDF YOU HAVE THE PASSWORD WITH YOU
-def decrypt_pdf(pdf_path, password):
-  out = PdfWriter()
-  file = PdfReader(pdf_path)
-  if file.is_encrypted:
-    try:
-      # ADD INCORRECT PASSWORD PROMPT LATER
-      file.decrypt(password)
-      for idx in range(len(file.pages)):
-        page = file.pages[idx]
-        out.add_page(page)
-      with open("file_decrypted.pdf", "wb") as f:
-        out.write(f)
-    except Exception:
-      print(f"An error occured. Is the password correct?")
-  else:
-    print("File is not encrypted")
-
-# pdf to audio
-def speak_text(text):
-    engine = pyttsx3.init()
-    engine.say(text)
-    engine.runAndWait()
-
-def audio(pdf_path):
-    with open(pdf_path, 'rb') as f:
-      pdf_reader = PdfReader(f)
-      # from_page = pdf_reader.pages[3]
-      for page in pdf_reader.pages:
-        text = page.extract_text()
-      # using threading to run the engine in a separated thread, allowing us to stop the engine
-      # otherwise, pyttsx3 would run til it finishes reading...
-        t = threading.Thread(target=speak_text, args=(text,))
-        t.daemon = True
-        t.start()
-      # t.join()
-    # while True:
-    #   if keyboard.is_pressed('ctrl+c'):
-    #     sys.exit(0)
-    while True:
-      if keyboard.is_pressed('ctrl+c'):
-        break
-
-# redact sensitive information on pdf
-class Redactor:
-  @staticmethod
-  # function to get all the lines
-  def get_sensitive_data(lines): 
-    
-    #email regex
-    EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d]+)"
-    for line in lines:
-      # match regex to each line
-      if re.search(EMAIL_REG, line, re.IGNORECASE):
-        search =  re.search(EMAIL_REG, line, re.IGNORECASE)
-        # yields creates a generator used to return values in between function iterations
-        yield search.group(1)
-  
-  # constructor
-  def __init__(self, path):
-    self.path = path
-
-  # main redactor code
-  def redaction(self):
-
-    # opening pdf file
-    doc = fitz.open(self.path)
-    # iterating through pages
-    for page in doc:
-      # _wrapContents is used to fix alignment issues with rect boxes
-      page.wrap_contents()
-      # getting rect boxes which consists the matching email regex
-      sensitive = self.get_sensitive_data(page.get_text("text").split('\n'))
-      for data in sensitive:
-        areas = page.search_for(data)
-        # drawing outline over sensitive datas
-        [page.add_redact_annot(area, fill = (0,0,0)) for area in areas]
-
-      # applying redaction
-      page.apply_redactions()
-
-    # saving it to a new pdf
-    doc.save("redacted.pdf")
-    print("Successfully redacted")
-
+from vibora.pdf2png import pdf_to_png
+from vibora.pdf2txt import pdf_to_text
+from vibora.txt2pdf import txt_to_pdf
+from vibora.extract_img_from_pdf import extract_img_from_pdf
+from vibora.compress import compress_pdf  
+from vibora.merge import merge_pdf, merge_pdf_directory
+from vibora.rename import rename_file
+from vibora.rotate import rotate_pdf
+from vibora.img2pdf import image_to_pdf
+from vibora.split import split_pdf
+from vibora.watermark import watermark_pdf
+from vibora.encrypt import encrypt_pdf
+from vibora.decrypt import decrypt_pdf
+from vibora.pdf2audio import audio
+from vibora.redact import Redactor
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -280,8 +54,10 @@ if __name__ == '__main__':
     print('   It will encrypt a .pdf file by adding a password to be able to read its content.')
     print("\nDECRYPT PDF:\n   To decrypt a .PDF file, you can you can use: 'vibora -decrypt [file].pdf [password]'")
     print("   It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.")
-    print("\nREAD PDF FOR ME:\n   To make vibora read (yes, audio related) a .PDF file, you can you can use: 'vibora -speak [file].pdf'")
+    print("\nREAD PDF FOR ME:\n   To make vibora read (yes, audio related) a .PDF file, you can use: 'vibora -speak [file].pdf'")
     print("   It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
+    print("\nREDACT SENSITIVE INFORMATIO:\n   To redact sensitive information in a .PDF file, you can use: 'vibora -redact [file].pdf'")
+    print("   It will hide sensitive information behind a black rectangle.")
     # exit()
   # case we actually pass a valid argument
   else:

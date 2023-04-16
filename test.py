@@ -1,7 +1,22 @@
 import os
 import sys
 import unittest
-from vibora import pdf_to_text, pdf_to_png, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf, watermark_pdf, encrypt_pdf, decrypt_pdf, audio, Redactor
+from main import pdf_to_text, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf , encrypt_pdf, decrypt_pdf, audio, Redactor
+from vibora.pdf2png import pdf_to_png
+from vibora.pdf2txt import pdf_to_text
+from vibora.txt2pdf import txt_to_pdf
+from vibora.extract_img_from_pdf import extract_img_from_pdf
+from vibora.compress import compress_pdf
+from vibora.merge import merge_pdf, merge_pdf_directory
+from vibora.rename import rename_file
+from vibora.rotate import rotate_pdf
+from vibora.img2pdf import image_to_pdf
+from vibora.split import split_pdf
+from vibora.watermark import watermark_pdf
+from vibora.encrypt import encrypt_pdf
+from vibora.decrypt import decrypt_pdf
+from vibora.pdf2audio import audio
+from vibora.redact import Redactor
 import glob
 import codecs
 import shutil
@@ -61,9 +76,9 @@ class ViboraTesting(unittest.TestCase):
     except Exception as e:
       self.fail(f"extract_img_from_pdf raised an unexpected exception: {e}")
     # check if the output file exists
-    self.assertTrue(os.path.exists('img1.png'))
+    self.assertTrue(os.path.exists('img1.jpeg'))
     # delete test files
-    for file in glob.glob('img*.png'):
+    for file in glob.glob('img*.jpeg'):
       os.remove(file)
 
   # testing compress pdf
