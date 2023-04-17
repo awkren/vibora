@@ -172,12 +172,12 @@ if __name__ == '__main__':
 
       case 'compress':
         pdf_path = args.pdf_path
-        # match args.debug:
-        #   case True:
-        #     logging.basicConfig(level=logging.DEBUG)
-        #   case False:
-        #     # logging.basicConfig(level=logging.INFO)
-        #     print(f"Compressing file: {args.pdf_path}\n. . .\nFile compressed!")
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            # logging.basicConfig(level=logging.INFO)
+            print(f"Compressing file: {args.pdf_path}\n. . .\nFile compressed!")
         compress_pdf(pdf_path)
       
       case 'txt2pdf':
