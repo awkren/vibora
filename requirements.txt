@@ -4,3 +4,4 @@ pymupdf
 fitz
 fpdf
 img2pdf
+psutil
