@@ -1,7 +1,6 @@
 # if you are on windows, download Poppler and add it to PATH
 # go to https://github.com/oschwartz10612/poppler-windows/releases/ to get the latest version
-import time
-import sys
+import time, os, sys, argparse, logging
 
 from vibora.pdf2png import pdf_to_png
 from vibora.pdf2txt import pdf_to_text
@@ -22,7 +21,7 @@ from vibora.redact import Redactor
 if __name__ == '__main__':
   # case we type only vibora
   if len(sys.argv) == 1:
-    print("Missign arguments, see 'vibora help' for reference on how to use it!")
+    print("Missign arguments, see 'help' for reference on how to use it!")
   # case we type vibora help
   elif sys.argv[1].lower() == 'help':
     print('\nWelcome to vibora :) A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!')
@@ -56,199 +55,180 @@ if __name__ == '__main__':
     print("   It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.")
     print("\nREAD PDF FOR ME:\n   To make vibora read (yes, audio related) a .PDF file, you can use: 'vibora -speak [file].pdf'")
     print("   It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
-    print("\nREDACT SENSITIVE INFORMATIO:\n   To redact sensitive information in a .PDF file, you can use: 'vibora -redact [file].pdf'")
+    print("\nREDACT SENSITIVE INFORMATION:\n   To redact sensitive information in a .PDF file, you can use: 'vibora -redact [file].pdf'")
     print("   It will hide sensitive information behind a black rectangle.")
-    # exit()
+    
   # case we actually pass a valid argument
   else:
-    # a command is the arg after the filename. e.g. vibora pdf2png(command) [filename]
-    command = sys.argv[1].lower()
-    
-    # same as switch in another languages
-    match command:
 
-      # convert pdf to png
-      # e.g. vibora pdf2png file.pdf
-      case "-pdf2png":
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print('File not found. Is the path correct?')
-          exit()
-        print("Converting your file. Just a second...")
+    # error msg
+    def custom_error(msg):
+      print("Command not recognized. Use 'help' to see the available commands.")
+      exit()
+
+    parser = argparse.ArgumentParser(description="vibora")
+    parser.error = custom_error
+    subparser = parser.add_subparsers(title='subparser', dest='subcommand')
+
+    # pdf to png subparser
+    pdf2png_parser = subparser.add_parser('pdf2png', description='Convert a .PDF file into a .PNG file.')
+    pdf2png_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the PDF file to convert.')
+    pdf2png_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode ')
+
+    # pdf to text subparser
+    pdf2txt_parser = subparser.add_parser('pdf2txt', description='Convert a .PDF file into a .TXT file.')
+    pdf2txt_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the PDF file.')
+    pdf2txt_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # extract img from pdf subparser
+    extractimg_parser = subparser.add_parser('extractimg', help='help message', description='It will extract all images from a .PDF file.')
+    extractimg_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    extractimg_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+    
+    # compress subparser
+    compress_parser = subparser.add_parser('compress', help='help message', description='It will compress your file without losing quality or removing content.')
+    compress_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the PDF file to compress.')
+    compress_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # text to pdf subparser
+    txt2pdf_parser = subparser.add_parser('txt2pdf', help='help message', description='It will convert a .TXT file into a .PDF file.')
+    txt2pdf_parser.add_argument('txt_path', type=str, metavar='txt_path', help='Path to the .TXT file.')
+    txt2pdf_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # merge pdf subparser
+    merge_parser = subparser.add_parser('merge', help='help message', description='It will merge .PDF files into a single one.')
+    merge_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to .PDF files.')
+    merge_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # merge all pdf inside dir subparser
+    mergeall_parser = subparser.add_parser('mergeall', help='help message', description='It will merge all .PDF files inside a directory.')
+    mergeall_parser.add_argument('dir_path', type=str, metavar='dir_path', help='Path to directory.')
+    mergeall_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # rename file subparser
+    rename_parser = subparser.add_parser('rename', help='help message', description='It will rename a file.')
+    rename_parser.add_argument('file_path', type=str, metavar='file_path', help='Path to the file to rename.')
+    rename_parser.add_argument('new_name', type=str, metavar='new_name', help='New file name')
+    rename_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # rotate pdf subparser
+    rotate_parser = subparser.add_parser('rotate', help='help message', description='It will rotate a .PDF file by 90 degrees.')
+    rotate_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    rotate_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # image to pdf subparser
+    img2pdf_parser = subparser.add_parser('img2pdf', help='help message', description='It will convert an image into a .PDF file.')
+    img2pdf_parser.add_argument('img_path', type=str, metavar='img_path', help='Path to the image file.')
+    img2pdf_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # split pdf subparser
+    split_parser = subparser.add_parser('split', help='help message', description='It will split a .PDF file into separated files, each page will be a .PDF file.')
+    split_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    split_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # watermark pdf subparser
+    watermark_parser = subparser.add_parser('watermark', help='help message', description='It will add a watermark to a .PDF file.')
+    watermark_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    watermark_parser.add_argument('watermark_path', type=str, metavar='watermark_file', help='Path to the watermark file.')
+    watermark_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # encrypt pdf subparser
+    encrypt_parser = subparser.add_parser('encrypt', help='help message', description='It will encrypt a .PDF file.')
+    encrypt_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    encrypt_parser.add_argument('password', type=str, metavar='password', help='Password to encrypt the file with.')
+    encrypt_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # decrypt pdf subparser
+    decrypt_parser = subparser.add_parser('decrypt', help='help message', description='It will decrypt a .PDF file.')
+    decrypt_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    decrypt_parser.add_argument('password', type=str, metavar='password', help='Password to decrypt the file.')
+    decrypt_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # pdf to audio subparser
+    pdf2audio_parser = subparser.add_parser('pdf2audio', help='help message', description='It will read a .PDF file for you.')
+    pdf2audio_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    pdf2audio_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # redact information from pdf subparser
+    redact_parser = subparser.add_parser('redact', help='help message', description='It will redact sensitive information from a .PDF file.')
+    redact_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+    redact_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    args = parser.parse_args()  
+
+    match args.subcommand:
+
+      case 'pdf2png':
+        pdf_path = args.pdf_path
         pdf_to_png(pdf_path)
-        time.sleep(2)
-        print('File converted!')
-        exit()
-    
-      # convert pdf to text
-      # e.g. vibora pdf2text file.pdf
-      case '-pdf2txt':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print('File not found. Is the path correct?')
-          exit()
-        print('Converting you file. Just a second...')
+      
+      case 'pdf2text':
+        pdf_path = args.pdf_path
         pdf_to_text(pdf_path)
-        time.sleep(2)
-        print('File converted!')
-        exit()
 
-      # extract imgs from pdf
-      # e.g. vibora extractimg file.pdf
-      case '-extractimg':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print('File not found. Is the path correct?')
-          exit()
+      case 'extractimg':
+        pdf_path = args.pdf_path
         extract_img_from_pdf(pdf_path)
-        time.sleep(2)
-        print("Just a second...")
-        print("All done! Images extracted")
-        exit()
 
-      # compress pdf
-      # e.g. vibora compress file.pdf
-      case '-compress':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print('File not found. Is the path correct?')
-          exit()
+      case 'compress':
+        pdf_path = args.pdf_path
+        # match args.debug:
+        #   case True:
+        #     logging.basicConfig(level=logging.DEBUG)
+        #   case False:
+        #     # logging.basicConfig(level=logging.INFO)
+        #     print(f"Compressing file: {args.pdf_path}\n. . .\nFile compressed!")
         compress_pdf(pdf_path)
-        print('Compressing your file, just a second...')
-        time.sleep(2)
-        print('All done! File compressed')
+      
+      case 'txt2pdf':
+        txt_path = args.txt_path
+        txt_to_pdf(txt_path)
 
-      # convert txt to pdf
-      case '-txt2pdf':
-        txt_path = sys.argv[2]
-        # check if the file exists
-        file_exists = os.path.isfile(txt_path)
-        if not file_exists:
-          print("File not found. Is the path correct?")
-          exit()
-        txt_to_pdf(txt_path)      
+      case 'merge':
+        pdf_path = args.pdf_path
+        merge_pdf(pdf_path)
 
-      # merge pdfs into one pdf
-      case '-merge':
-        pdf_files = sys.argv[2:]
-        # check if file exists
-        print("Merging your files... Just a second.")
-        time.sleep(3)
-        merge_pdf(*pdf_files)
+      case 'mergeall':
+        dir_path = args.dir_path
+        merge_pdf_directory(dir_path)
+    
+      case 'rename':
+        file_path = args.file_path
+        new_name = args.new_name
+        rename_file(file_path, new_name)
 
-      # merge folder of pdfs
-      case '-mf':
-        directory = sys.argv[2]
-        merge_pdf_directory(directory)
-
-      # rename files
-      case '-rename':
-        file = sys.argv[2]
-        new_name = sys.argv[3]
-        # check if file exists
-        file_exists = os.path.isfile(file)
-        if not file_exists:
-          print("File not found. Is the path correct?")
-          exit()
-        rename_file(file, new_name)
-
-      # rotate pdf
-      case '-rotate':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print("File not found. Is the path correct?")
-          exit()
-        print("Rotating your file... Just a second.")
-        time.sleep(3)
+      case 'rotate':
+        pdf_path = args.pdf_path
         rotate_pdf(pdf_path)
-        print("File rotated!")
-    
-      # image to pdf
-      case '-img2pdf':
-        img_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(img_path)
-        if not file_exists:
-          print("File not found. Is the path correct?")
-          exit()
-        print("Converting your file... Just a second.")
-        time.sleep(3)
-        image_to_pdf(img_path)
-        print("File converted")
-  
-      # split pdf
-      case '-split':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        file_exists = os.path.isfile(pdf_path)
-        if not file_exists:
-          print("File not found. Is the path correct?")
-          exit()
-        split_pdf(pdf_path)
-        print("Spliting your pdf files... Just a second.")
-        time.sleep(3)
-        print("PDF split into separated pages")
 
-      # add watermark to pdf
-      case '-watermark':
-        pdf_path = sys.argv[2]
-        watermark = sys.argv[3]
-        # check if files exists
-        pdf_exists = os.path.isfile(pdf_path)
-        watermark_exists = os.path.isfile(watermark)
-        if not pdf_exists:
-          print("PDF file not found. Is the path correct?")
-        if not watermark_exists:
-          print("Watermark file not found. Is the path correct?")
-        watermark_pdf(pdf_path, watermark)
-    
-      # encrypt a pdf file
-      case '-encrypt':
-        pdf_path = sys.argv[2]
-        password = sys.argv[3]
-        # check if file exists
-        pdf_exists = os.path.isfile(pdf_path)
-        if not pdf_exists:
-          print("File not found. Is the path correct?")
-          exit()
+      case 'img2pdf':
+        img_path = args.img_path
+        image_to_pdf(img_path)
+      
+      case 'split':
+        pdf_path = args.pdf_path
+        split_pdf(pdf_path)
+
+      case 'watermark':
+        pdf_path = args.pdf_path
+        watermark_path = args.watermark_path
+        watermark_pdf(pdf_path, watermark_path)
+
+      case 'encrypt':
+        pdf_path = args.pdf_path
+        password = args.password
         encrypt_pdf(pdf_path, password)
 
-      # decrypt a pdf file
-      case '-decrypt':
-        pdf_path = sys.argv[2]
-        password = sys.argv[3]
-        # check if file exists
-        pdf_exists = os.path.isfile(pdf_path)
-        if not pdf_exists:
-          print("File not found. Is the paht correct?")
+      case 'decrypt':
+        pdf_path = args.pdf_path
+        password = args.password
         decrypt_pdf(pdf_path, password)
 
-      # speak the pdf content      
-      case '-speak':
-        pdf_path = sys.argv[2]
-        # check if file exists
-        pdf_exists = os.path.isfile(pdf_path)
-        if not pdf_exists:
-          print("File not found. Is the path correct?")
-        print("Reading file...\nPress CTRL + C after the text is read to stop the -speak command.")
+      case 'pdf2audio':
+        pdf_path = args.pdf_path
         audio(pdf_path)
 
-      # redact sensitive information
-      case '-redact':
-        path = sys.argv[2]
-        redactor = Redactor(path)
+      case 'redact':
+        pdf_path = args.pdf_path
+        redactor = Redactor(pdf_path)
         redactor.redaction()
-
-      # case command doesn't exist
-      case _:
-        print("Command not recognized. Use 'vibora help' to see all the available commands")
