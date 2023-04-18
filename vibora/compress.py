@@ -37,7 +37,6 @@ def compress_pdf(pdf_path, progress_interval=1):
         progress_counter = i+1
         progress_percent = progress_counter / num * 100
         logging.info(f"Encrypted {progress_counter} of {num} pages ({progress_percent:.1f}%)")
-
     output_file = "file.pdf"
     with open(output_file, 'wb') as f:
       writer.write(f)

@@ -40,7 +40,7 @@ def encrypt_pdf(pdf_path, password, progress_interval=1):
       out.write(f)
     end_time = time.time()
     elapsed_time = end_time - start_time
-    logging.info(f"File size after encryption: {os.path.getsize(pdf_path)}")
+    logging.info(f"File size after encryption: {os.path.getsize(pdf_path)} bytes")
     logging.info("Finished encrypting file. Elapsed time %.3f", elapsed_time)
   except Exception as e:
     logging.exception(e)
