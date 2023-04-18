@@ -209,6 +209,11 @@ if __name__ == '__main__':
 
       case 'rotate':
         pdf_path = args.pdf_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Rotating file: {pdf_path}\n. . .\nFile rotated!")
         rotate_pdf(pdf_path)
 
       case 'img2pdf':
