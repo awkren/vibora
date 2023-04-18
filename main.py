@@ -213,6 +213,11 @@ if __name__ == '__main__':
 
       case 'img2pdf':
         img_path = args.img_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Converting file: {args.img_path}\n. . .\nFile converted!")
         image_to_pdf(img_path)
       
       case 'split':
