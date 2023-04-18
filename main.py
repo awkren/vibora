@@ -217,11 +217,21 @@ if __name__ == '__main__':
       case 'encrypt':
         pdf_path = args.pdf_path
         password = args.password
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Encrypting file: {args.pdf_path}\n. . .\nFile encrypted!")
         encrypt_pdf(pdf_path, password)
 
       case 'decrypt':
         pdf_path = args.pdf_path
         password = args.password
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG) 
+          case False:
+            print(f"Decrypting file: {args.pdf_path}\n. . .\nFile decrypted!")
         decrypt_pdf(pdf_path, password)
 
       case 'pdf2audio':
