@@ -227,6 +227,11 @@ if __name__ == '__main__':
       case 'watermark':
         pdf_path = args.pdf_path
         watermark_path = args.watermark_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Adding watermark to file: {pdf_path}\n. . .\nWatermark added!")
         watermark_pdf(pdf_path, watermark_path)
 
       case 'encrypt':
