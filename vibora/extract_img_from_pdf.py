@@ -10,7 +10,6 @@ def extract_img_from_pdf(pdf_path):
     process = psutil.Process(os.getpid())
     file = pdf_path
     pdf_file = fitz.open(file)
-    progress_counter = 0
     for i, page_index in enumerate(range(len(pdf_file))):
       logging.debug(f"Extracting image from page {i+1}")
       page = pdf_file[page_index]
