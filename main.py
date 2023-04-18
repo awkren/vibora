@@ -160,6 +160,11 @@ if __name__ == '__main__':
 
       case 'pdf2png':
         pdf_path = args.pdf_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Converting file: {args.pdf_path}\n. . .\nFile converted!")
         pdf_to_png(pdf_path)
       
       case 'pdf2text':
