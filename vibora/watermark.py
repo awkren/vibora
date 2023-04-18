@@ -2,6 +2,7 @@ import logging, time, os ,psutil
 from PyPDF2 import PdfReader, PdfWriter
 
 # watermark pdf | to test it use testfiles/file.pdf for the watermark
+# watermark is added to bottom left of file.
 def watermark_pdf(pdf_path, watermark, progress_interval=1):
   try:
     logging.info(f"Adding watermark to file: {pdf_path}")
