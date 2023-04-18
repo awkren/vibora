@@ -31,7 +31,7 @@ def decrypt_pdf(pdf_path, password, progress_interval=1):
         end_time = time.time()
         elapsed_time = end_time - start_time
         logging.info(f"Fize size after decryption: {os.path.getsize(pdf_path)} bytes")
-        logging.info("Finished decrypting file. Elapsed tiem %.3f", elapsed_time)
+        logging.info("Finished decrypting file. Elapsed time %.3f", elapsed_time)
       except Exception:
         print(f"An error occured. Is the password correct?")
     else:

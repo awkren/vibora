@@ -173,6 +173,11 @@ if __name__ == '__main__':
 
       case 'extractimg':
         pdf_path = args.pdf_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Extracting images from file: {args.pdf_path}\n. . .\nImages extracted!")
         extract_img_from_pdf(pdf_path)
 
       case 'compress':
