@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     # merge pdf subparser
     merge_parser = subparser.add_parser('merge', help='help message', description='It will merge .PDF files into a single one.')
-    merge_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to .PDF files.')
+    merge_parser.add_argument('pdf_files', type=str, metavar='pdf_files', nargs='+', help='Path to .PDF files.')
     merge_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
 
     # merge all pdf inside dir subparser
@@ -195,8 +195,13 @@ if __name__ == '__main__':
         txt_to_pdf(txt_path)
 
       case 'merge':
-        pdf_path = args.pdf_path
-        merge_pdf(pdf_path)
+        pdf_files = args.pdf_files
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Merging files: {pdf_files}\n. . .\nFiles merged!")
+        merge_pdf(*pdf_files)
 
       case 'mergeall':
         dir_path = args.dir_path
