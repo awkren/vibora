@@ -205,6 +205,11 @@ if __name__ == '__main__':
 
       case 'mergeall':
         dir_path = args.dir_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Merging files in directory: {dir_path}\n. . .\n Files merged!")
         merge_pdf_directory(dir_path)
     
       case 'rename':
