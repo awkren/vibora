@@ -101,9 +101,9 @@ class ViboraTesting(unittest.TestCase):
     except Exception as e:
       self.fail(f"merge_pdf raised an unexpected exception: {e}")
     # check if the output file exists
-    self.assertTrue(os.path.exists('merged_pdf.pdf'))
+    self.assertTrue(os.path.exists('merged_file.pdf'))
     # delete test file
-    os.remove('merged_pdf.pdf')
+    os.remove('merged_file.pdf')
 
   # testing merge directory
   def test_merge_pdf_directory(self):
