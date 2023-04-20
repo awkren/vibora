@@ -220,6 +220,11 @@ if __name__ == '__main__':
       case 'rename':
         file_path = args.file_path
         new_name = args.new_name
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Renaming file {file_path} to {new_name}")
         rename_file(file_path, new_name)
 
       case 'rotate':
