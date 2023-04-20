@@ -10,7 +10,6 @@ def speak_text(text):
 def audio(pdf_path):
   with open(pdf_path, 'rb') as f:
     pdf_reader = PdfReader(f)
-    # from_page = pdf_reader.pages[3]
     for page in pdf_reader.pages:
       text = page.extract_text()
     # using threading to run the engine in a separated thread, allowing us to stop the engine
