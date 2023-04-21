@@ -197,6 +197,11 @@ if __name__ == '__main__':
       
       case 'txt2pdf':
         txt_path = args.txt_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Converting file {txt_path}\n. . .\nFile converted!")
         txt_to_pdf(txt_path)
 
       case 'merge':
