@@ -247,6 +247,11 @@ if __name__ == '__main__':
       
       case 'split':
         pdf_path = args.pdf_path
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Splitting file: {pdf_path}\n. . .\nFile split!")
         split_pdf(pdf_path)
 
       case 'watermark':
