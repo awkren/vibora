@@ -7,7 +7,6 @@ class Redactor:
   @staticmethod
   # function to get all the lines
   def get_sensitive_data(lines):
-    
     #email regex
     EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d]+)"
     for line in lines:

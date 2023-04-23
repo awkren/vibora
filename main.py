@@ -17,6 +17,7 @@ from vibora.encrypt import encrypt_pdf
 from vibora.decrypt import decrypt_pdf
 from vibora.pdf2audio import audio
 from vibora.redact import Redactor
+from vibora.compare import compare_file
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -153,6 +154,12 @@ if __name__ == '__main__':
     redact_parser = subparser.add_parser('redact', help='help message', description='It will redact sensitive information from a .PDF file.')
     redact_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
     redact_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
+
+    # compare files subparser
+    compare_parser = subparser.add_parser('compare', help='help message', description='It will compare files at a low level.')
+    compare_parser.add_argument('file1', type=str, metavar='file1', help='Path to file one.')
+    compare_parser.add_argument('file2', type=str, metavar='file2', help='Path to file two.')
+    compare_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
 
     args = parser.parse_args()  
 
@@ -297,3 +304,13 @@ if __name__ == '__main__':
         pdf_path = args.pdf_path
         redactor = Redactor(pdf_path)
         redactor.redaction()
+      
+      case 'compare':
+        file1 = args.file1
+        file2 = args.file2
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Comparing files {file1} and {file2}\n. . .")
+        compare_file(file1, file2)
