@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/tokei/lines/github/wuzue/vibora?style=flat)
 ![](https://img.shields.io/github/issues-raw/wuzue/vibora)
-![](https://img.shields.io/github/issues-closed/wuzue/vibora)
+![](https://img.shields.io/github/issues-closed-raw/wuzue/vibora)
 ![](https://img.shields.io/github/issues-pr-raw/wuzue/vibora)
 ![](https://img.shields.io/github/issues-pr-closed-raw/wuzue/vibora)
 ![](https://img.shields.io/badge/Python-3.10%2B-blue)
