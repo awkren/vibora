@@ -1,6 +1,4 @@
-import os
-import sys
-import unittest
+import os, sys, unittest, time, glob, codecs, shutil, warnings, subprocess
 from main import pdf_to_text, extract_img_from_pdf, compress_pdf, txt_to_pdf, merge_pdf, merge_pdf_directory,rename_file, rotate_pdf, image_to_pdf, split_pdf , encrypt_pdf, decrypt_pdf, audio, Redactor
 from vibora.pdf2png import pdf_to_png
 from vibora.pdf2txt import pdf_to_text
@@ -17,12 +15,9 @@ from vibora.encrypt import encrypt_pdf
 from vibora.decrypt import decrypt_pdf
 from vibora.pdf2audio import audio
 from vibora.redact import Redactor
-import glob
-import codecs
-import shutil
+from vibora.compare import compare_file
 from io import StringIO
 from unittest.mock import patch
-import warnings
 warnings.filterwarnings("ignore", message=".*._SixMetaPathImporter.*")
 
 class ViboraTesting(unittest.TestCase):
@@ -39,6 +34,7 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('page*.png'):
       os.remove(file)
+    print("pdf_to_png OK")
 
   # testing pdf to text
   def test_pdf_to_text(self):
@@ -55,6 +51,7 @@ class ViboraTesting(unittest.TestCase):
       self.assertGreater(len(content), 0)
     # Delete the test files
     os.remove('file.txt')
+    print("pdf_to_text OK")
   
   # testing txt file to pdf
   def test_txt_to_pdf(self):
@@ -67,6 +64,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('myfile.pdf'))
     # delete test files
     os.remove('myfile.pdf')
+    print("txt_to_pdf OK")
 
   # testing extract img from pdf
   def test_img_from_pdf(self):
@@ -80,6 +78,7 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('img*.jpeg'):
       os.remove(file)
+      print("img_from_pdf OK")
 
   # testing compress pdf
   def test_compress_pdf(self):
@@ -92,6 +91,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test files
     os.remove('file.pdf')
+    print("compress_pdf OK")
 
   # testing merge pdf
   def test_merge_pdf(self):
@@ -104,6 +104,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('merged_file.pdf'))
     # delete test file
     os.remove('merged_file.pdf')
+    print("merge_pdf OK")
 
   # testing merge directory
   def test_merge_pdf_directory(self):
@@ -116,6 +117,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('mergedall_file.pdf'))
     # delete test file
     os.remove('mergedall_file.pdf')
+    print("merge_pdf_directory OK")
 
   # testing rename files
   def test_rename_file(self):
@@ -128,6 +130,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('new.txt'))
     rename_file('new.txt', 'testpaper4.txt')
     shutil.move('testpaper4.txt', 'testfiles/testpaper4.txt')
+    print("rename_file OK")
   
   # testing rotate files
   def test_rotate_pdf(self):
@@ -140,6 +143,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
+    print("rotate_pdf OK")
 
   # testing image to pdf
   def test_image_to_pdf(self):
@@ -152,6 +156,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
+    print("image_to_pdf OK")
   
   # testing split pdf
   def test_split_pdf(self):
@@ -165,6 +170,7 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('*.pdf'):
       os.remove(file)
+    print("split_pdf OK")
   
   # testing watermark pdf
   def test_watermark_pdf(self):
@@ -177,6 +183,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('watermarked.pdf'))
     # delete test files
     os.remove('watermarked.pdf')
+    print("watermark_pdf OK")
   
   # testing encrypt pdf
   def test_encrypt_pdf(self):
@@ -189,6 +196,7 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('file.pdf'))
     # delete test file
     os.remove('file.pdf')
+    print("encrypt_pdf OK")
   
   # testing decrypt pdf
   def test_decrypt_pdf(self):
@@ -203,6 +211,7 @@ class ViboraTesting(unittest.TestCase):
     # delete test files
     for file in glob.glob('*.pdf'):
       os.remove(file)
+    print("decrypt_pdf OK")
 
   # testing redact sensitive information from pdf
   def test_redaction(self):
@@ -216,6 +225,17 @@ class ViboraTesting(unittest.TestCase):
     self.assertTrue(os.path.exists('redacted.pdf'))
     # delete test file
     os.remove('redacted.pdf')
+    print("redaction OK")
+
+  # testing compare function
+  def test_compare_file(self):
+    try:
+      result = compare_file("testfiles/testmatch1.pdf", "testfiles/testmatch2.pdf")
+    except Exception as e:
+      self.fail(f"compare_file raised an unexpected excetion: {e}")
+    # check the output
+    self.assertTrue(result)
+    print("compare_file OK")
   
   # testing pdf to audio
   # skipping audio test due to six error

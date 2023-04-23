@@ -58,6 +58,8 @@ if __name__ == '__main__':
     print("   It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
     print("\nREDACT SENSITIVE INFORMATION:\n   To redact sensitive information in a .PDF file, you can use: 'vibora -redact [file].pdf'")
     print("   It will hide sensitive information behind a black rectangle.")
+    print("\nCOMPARE FILES:\n   To compare files at a low level, you can use: 'vibora compare [file1.pdf] [file2.pdf]'")
+    print("   It will compare these files at a low level (length, metadata, etc) to see if they match.")
     
   # case we actually pass a valid argument
   else:
@@ -312,5 +314,6 @@ if __name__ == '__main__':
           case True:
             logging.basicConfig(level=logging.DEBUG)
           case False:
+            # logging.basicConfig(level=logging.DEBUG)
             print(f"Comparing files {file1} and {file2}\n. . .")
         compare_file(file1, file2)
