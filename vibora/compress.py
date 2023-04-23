@@ -2,19 +2,6 @@ import logging, time, os, psutil
 from PyPDF2 import PdfReader, PdfWriter
 
 # loseless pdf compression
-
-# Taking 0.33  to run (without debugging). 
-# If fitz is used, its taking 0.75 (its slower even without adding debugging to the function)
-# def compress_pdf(pdf_path):
-#   reader = PdfReader(pdf_path)
-#   writer = PdfWriter()
-#   for page in reader.pages:
-#     page.compress_content_streams() # this is cpu intensive!!!
-#     writer.add_page(page)
-#   with open("file.pdf", 'wb') as f:
-#     writer.write(f)
-
-# This is the same as the function above, but supports debugging
 def compress_pdf(pdf_path, progress_interval=1):
   try:
     # log loaded file
@@ -29,7 +16,7 @@ def compress_pdf(pdf_path, progress_interval=1):
     for i, page in enumerate(reader.pages):
       # log each file that is being compressed
       logging.debug("Compressing page %d", i+1)
-      page.compress_content_streams()
+      page.compress_content_streams() # cpu intensive
       writer.add_page(page)
       mem_usage = process.memory_info().rss / 1024 / 1024 # in mb
       logging.debug(f"Memory usage: {mem_usage:.2f} MB")
