@@ -1,17 +1,19 @@
-import logging, time, os, psutil, contextlib
+import logging, time, os, psutil, contextlib, PyPDF2
 from multiprocessing import Pool
 from PyPDF2 import PdfReader, PdfWriter
 from tqdm import tqdm
 
 # Todo:
-# Add error handling for PyPDF2 exceptions: The compress_content_streams method can raise various exceptions if the PDF file is corrupt or contains unsupported features. 
-# Add appropriate error handling to catch these exceptions and log an error message.
-
 # Make the output file name configurable: Allow the user to specify the output file name as a parameter instead of hard-coding it in the function.
 # Add support for multiprocessing: The current implementation compresses each page sequentially. 
 
 # loseless pdf compression
 def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
+  
+  # returns a logger object with the specified name that we can use to customize the logging behavior.
+  # this allow us to specify the logging level, add filters, and direct the log messages to specific handlers, among other things.
+  logger = logging.getLogger(__name__)
+
   try:
     # input validation
     if not os.path.isfile(pdf_path) or not pdf_path.lower().endswith('.pdf'):
@@ -106,5 +108,14 @@ def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
     logging.info("Percentage variation compairing to original file: -%.2f%%", calc_percentage_variation)
     logging.info("Finished compressing file. Elapsed time %.3f", elapsed_time)
   
+  except PyPDF2.utils.PdfReadError as e:
+    # catch the PdfReadError exception raised by PyPDF2
+    logger.error(f"Error reading PDF file: {e}")
+
+  except PyPDF2.utils.PdfStreamErorr as e:
+    # catch the PdfStreamError exception raised by PyPDF2
+    logger.error(f"Error in PDF stream: {e}")
+
   except Exception as e:
-    logging.exception(e)
+    # catch any other exceptions raised during the execution of the code
+    logger.error(f"Unexpected error occurred: {e}")
