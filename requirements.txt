@@ -5,3 +5,4 @@ fitz
 fpdf
 img2pdf
 psutil
+tqdm
