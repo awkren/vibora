@@ -1,11 +1,9 @@
 import logging, time, os, psutil, contextlib
 from multiprocessing import Pool
 from PyPDF2 import PdfReader, PdfWriter
+from tqdm import tqdm
 
 # Todo:
-# Improve progress reporting: Currently, progress is reported by logging the percentage of pages that have been compressed. 
-# Consider adding a progress bar to make it easier to visualize the progress of the compression.
-
 # Add error handling for PyPDF2 exceptions: The compress_content_streams method can raise various exceptions if the PDF file is corrupt or contains unsupported features. 
 # Add appropriate error handling to catch these exceptions and log an error message.
 
@@ -27,7 +25,7 @@ def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
     logging.info(f"Started compressing PDF file: {pdf_path}")
     logging.info(f"File size before compression: {os.path.getsize(pdf_path)} bytes")
     start_time = time.monotonic() # time.monotonic was used to avoid issues with system time changes
-    process = psutil.Process(os.getpid()) # get current process
+    process = psutil.Process(os.getpid()) # get current process 
     reader = PdfReader(pdf_path)
     writer = PdfWriter()
     num = len(reader.pages)
@@ -38,22 +36,24 @@ def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
       page.compress_content_streams()
       return page
 
-      # use multiprocessing to compress pages is parallel
+      # use multiprocessing to compress pages in parallel
     if num_processes > 1:
       with Pool(processes=num_processes) as pool:
-        compressed_pages = pool.map(compress_page, reader.pages)
+          compressed_pages = pool.map(compress_page, reader.pages)
     else:
       compressed_pages = [compress_page(page) for page in reader.pages]
     
-    # here we pass compressed pages to the writer instead of the usual "raw" reader
-    for i, page in enumerate(compressed_pages):
-      writer.add_page(page)
-      mem_usage = process.memory_info().rss / 1024 / 1024
-      logging.debug(f"Memory usage: {mem_usage:.2f} MB")
-      if i+1 >= progress_counter + progress_interval or i+1 == num:
-        progress_counter = i+1
-        progress_percent = progress_counter / num * 100
-        logging.info(f"Compressed {progress_counter} of {num} pages ({progress_percent:.1f}%)")
+    with tqdm(total=num, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}]") as pbar:
+      # here we pass compressed pages to the writer instead of the usual "raw" reader
+      for i, page in enumerate(compressed_pages):
+        writer.add_page(page)
+        mem_usage = process.memory_info().rss / 1024 / 1024
+        logging.debug(f"Memory usage: {mem_usage:.2f} MB")
+        if i+1 >= progress_counter + progress_interval or i+1 == num:
+          progress_counter = i+1
+          progress_percent = progress_counter / num * 100
+          logging.info(f"Compressed {progress_counter} of {num} pages ({progress_percent:.1f}%)")
+          pbar.update(1)
 
     # WITHOUT MULTIPROCESSING
     # for i, page in enumerate(reader.pages):
