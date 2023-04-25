@@ -91,6 +91,7 @@ if __name__ == '__main__':
     # compress subparser
     compress_parser = subparser.add_parser('compress', help='help message', description='It will compress your file without losing quality or removing content.')
     compress_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the PDF file to compress.')
+    compress_parser.add_argument('output', type=str, metavar='output', nargs='?', help='Name of the output file.')
     compress_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
 
     # text to pdf subparser
@@ -196,13 +197,14 @@ if __name__ == '__main__':
 
       case 'compress':
         pdf_path = args.pdf_path
+        output = args.output
         match args.debug:
           case True:
             logging.basicConfig(level=logging.DEBUG)
           case False:
             # logging.basicConfig(level=logging.INFO)
             print(f"Compressing file: {args.pdf_path}\n. . .\nFile compressed!")
-        compress_pdf(pdf_path)
+        compress_pdf(pdf_path, output)
       
       case 'txt2pdf':
         txt_path = args.txt_path

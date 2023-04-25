@@ -2,13 +2,13 @@ import logging, time, os, psutil, contextlib, PyPDF2
 from multiprocessing import Pool
 from PyPDF2 import PdfReader, PdfWriter
 from tqdm import tqdm
+from typing import Optional
 
 # Todo:
 # Make the output file name configurable: Allow the user to specify the output file name as a parameter instead of hard-coding it in the function.
-# Add support for multiprocessing: The current implementation compresses each page sequentially. 
 
 # loseless pdf compression
-def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
+def compress_pdf(pdf_path, output: Optional[str] = None, progress_interval=1, num_processes=1):
   
   # returns a logger object with the specified name that we can use to customize the logging behavior.
   # this allow us to specify the logging level, add filters, and direct the log messages to specific handlers, among other things.
@@ -37,14 +37,12 @@ def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
     def compress_page(page):
       page.compress_content_streams()
       return page
-
       # use multiprocessing to compress pages in parallel
     if num_processes > 1:
       with Pool(processes=num_processes) as pool:
           compressed_pages = pool.map(compress_page, reader.pages)
     else:
-      compressed_pages = [compress_page(page) for page in reader.pages]
-    
+      compressed_pages = [compress_page(page) for page in reader.pages]   
     with tqdm(total=num, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}]") as pbar:
       # here we pass compressed pages to the writer instead of the usual "raw" reader
       for i, page in enumerate(compressed_pages):
@@ -71,14 +69,23 @@ def compress_pdf(pdf_path, progress_interval=1, num_processes=1):
     #     logging.info(f"Encrypted {progress_counter} of {num} pages ({progress_percent:.1f}%)")
     
     # by using a context manager to handle file i/o, instead of a with statement,
-    # it ensures the file is properly closed, even if an exception is raised 
-    output_file = "file.pdf"
-    with open(output_file, 'wb') as f:
-      try:
-        writer.write(f)
-      except Exception as e:
-        logging.exception(e)
-        raise e
+    # it ensures the file is properly closed, even if an exception is raised
+    if output == None:
+      output_file = "file.pdf" # if an output name is not passed, it creates a file.pdf by default
+      with open(output_file, 'wb') as f:
+        try:
+          writer.write(f)
+        except Exception as e:
+          logging.exception(e)
+          raise e
+    else:
+      output_file = output # if an output name is passed, it receives its name
+      with open(output_file, 'wb') as f:
+        try:
+          writer.write(f)
+        except Exception as e:
+          logging.exception(e)
+          raise e
 
     # it is also possible to use contextlib module to create a context
     # manager for handling file i/o
