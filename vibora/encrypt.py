@@ -22,7 +22,7 @@ def encrypt_pdf(pdf_path, password, progress_interval=1):
         progress_counter = i+1
         progress_percent = progress_counter / num * 100
         logging.info(f"Encrypted {progress_counter} of {num} pages ({progress_percent:.1f}%)")
-    out.encrypt(password)
+    out.encrypt(password) # AES-128 encryption by default
     with open("file.pdf", 'wb') as f:
       out.write(f)
     end_time = time.time()
