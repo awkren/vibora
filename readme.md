@@ -2,9 +2,9 @@
 
 <!-- ![](https://img.shields.io/tokei/lines/github/wuzue/vibora?style=flat) -->
 <!-- ![](https://img.shields.io/github/issues-raw/wuzue/vibora) -->
-![](https://img.shields.io/github/issues-closed-raw/wuzue/vibora)
+<!-- ![](https://img.shields.io/github/issues-closed-raw/wuzue/vibora) -->
 <!-- ![](https://img.shields.io/github/issues-pr-raw/wuzue/vibora) -->
-![](https://img.shields.io/github/issues-pr-closed-raw/wuzue/vibora)
+<!-- ![](https://img.shields.io/github/issues-pr-closed-raw/wuzue/vibora) -->
 ![](https://img.shields.io/badge/Python-3.10%2B-blue)
 
 </div>
@@ -54,4 +54,4 @@ python main.py help
 * Compare PDF files at a low level
 * Convert a PDF file content into audio
 * Redact sensitive information in a PDF file
-* And more things. See all the features in *python main.py help*.
+* And more things. See all the features by typing ```python main.py help```.
