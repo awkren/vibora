@@ -16,6 +16,7 @@ from typing import Optional
 # caching:
 # add a caching mechanism to avoid recompressing files that have already been compressed. 
 # this could save a significant amount of time and resources when processing large numbers of files.
+# - i think this could be done by creating a cache dir, and adding there info about compressed files and check there.
 
 # logging improvements:
 # add more detailed logging to track the progress of the function, including the time taken to compress the file, 
@@ -67,6 +68,9 @@ def compress_pdf(pdf_path, output: Optional[str] = None, progress_interval=1, nu
     #
     # multiprocessing uses two or more CPUs to increase computing power, whereas multithreading uses a single process with multiple code segments to increase computing power. 
     # multithreading focuses on generating computing threads from a single process, whereas multiprocessing increases computing power by adding CPUs.
+    #
+    # multiprocessing seems very unstable, as its runtime varies a lot,
+    # multithreading keeps a solid runtime of 54 sec compressing a 150mb pdf file.
 
     # HERE WE USE MULTITHREADING
     def compress_page(page):
@@ -89,7 +93,6 @@ def compress_pdf(pdf_path, output: Optional[str] = None, progress_interval=1, nu
           progress_percent = progress_counter / num * 100
           logging.info(f"Compressed {progress_counter} of {num} pages ({progress_percent:.1f}%)")
           pbar.update(1)
-
 
     # HERE WE USE MULTIPROCESSING
     # def compress_page(page):
@@ -174,13 +177,13 @@ def compress_pdf(pdf_path, output: Optional[str] = None, progress_interval=1, nu
     logging.info("Percentage variation compairing to original file: -%.2f%%", calc_percentage_variation)
     logging.info("Finished compressing file. Elapsed time %.3f", elapsed_time)
   
-  except PyPDF2.utils.PdfReadError as e:
-    # catch the PdfReadError exception raised by PyPDF2
-    logger.error(f"Error reading PDF file: {e}")
+  # except PyPDF2._utils.PdfReadError as e:
+  #   # catch the PdfReadError exception raised by PyPDF2
+  #   logger.error(f"Error reading PDF file: {e}")
 
-  except PyPDF2.utils.PdfStreamErorr as e:
-    # catch the PdfStreamError exception raised by PyPDF2
-    logger.error(f"Error in PDF stream: {e}")
+  # except PyPDF2.utils.PdfStreamErorr as e:
+  #   # catch the PdfStreamError exception raised by PyPDF2
+  #   logger.error(f"Error in PDF stream: {e}")
 
   except Exception as e:
     # catch any other exceptions raised during the execution of the code
