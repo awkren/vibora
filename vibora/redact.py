@@ -7,14 +7,21 @@ class Redactor:
   @staticmethod
   # function to get all the lines
   def get_sensitive_data(lines):
-    #email regex
+    # email regex
     EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d]+)"
+
+    # cpf regex
+    CPF_REG = r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b"
+    
     for line in lines:
       # match regex to each line
       if re.search(EMAIL_REG, line, re.IGNORECASE):
-        search =  re.search(EMAIL_REG, line, re.IGNORECASE)
+        search = re.search(EMAIL_REG, line, re.IGNORECASE) 
         # yields creates a generator used to return values in between function iterations
         yield search.group(1)
+      elif re.search(CPF_REG, line):
+        search = re.search(CPF_REG, line)
+        yield search.group(0)
   
   # constructor
   def __init__(self, path):
