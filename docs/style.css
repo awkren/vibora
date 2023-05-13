@@ -1,7 +1,20 @@
 body{
-  background-color: #ccc5b9;
-  font-family: sans-serif
+  /* background-color: #ccc5b9; */
+  font-family: sans-serif;
+  margin: auto;
+  width:80%;
 }
+
+#title{
+  
+}
+
+.cx{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+*{border:1px solid red;}
 
 img{
   width: 200px;
