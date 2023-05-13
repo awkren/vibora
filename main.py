@@ -18,7 +18,8 @@ from vibora.decrypt import decrypt_pdf
 from vibora.pdf2audio import audio
 from vibora.redact import Redactor
 from vibora.compare import compare_file
-from vibora.rwcompression import rwcomp
+from vibora.extra_compression.rwcompression import rwcomp
+from vibora.extra_compression.fitzcompression import fitzcomp
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -165,9 +166,13 @@ if __name__ == '__main__':
     compare_parser.add_argument('file2', type=str, metavar='file2', help='Path to file two.')
     compare_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
 
-    # rwcompressions subparser
+    # rwcompression subparser
     rwcompression_parser = subparser.add_parser('rwcompress', help='help message', description='Compress files using pdfrw compressions algorithm')
     rwcompression_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+
+    # fitzcompression subparser
+    fitzcompression_parser = subparser.add_parser('fitzcompress', help='help message', description='Compress files using pymupdf.')
+    fitzcompression_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
 
     args = parser.parse_args()  
 
@@ -328,3 +333,8 @@ if __name__ == '__main__':
       case 'rwcompress':
         pdf_path = args.pdf_path
         rwcomp(pdf_path)
+
+      case 'fitzcompress':
+        pdf_path = args.pdf_path
+        fitzcomp(pdf_path)
+
