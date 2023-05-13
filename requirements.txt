@@ -6,3 +6,5 @@ fpdf
 img2pdf
 psutil
 tqdm
+keyboard
+pyttsx3
