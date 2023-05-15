@@ -317,6 +317,11 @@ if __name__ == '__main__':
       case 'redact':
         pdf_path = args.pdf_path
         redactor = Redactor(pdf_path)
+        match args.debug:
+          case True:
+            logging.basicConfig(level=logging.DEBUG)
+          case False:
+            print(f"Redacting file: {pdf_path}")
         redactor.redaction()
       
       case 'compare':
