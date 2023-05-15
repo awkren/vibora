@@ -1,4 +1,7 @@
-import re, fitz
+import re, fitz, logging, os, psutil, time
+
+# SOME GOOD THINGS THAT COULD BE ADDED:
+# - add a counter of things that can be redacted. i.e `5 emails found, etc`
 
 # redact sensitive information on pdf
 # by now, it only removes email, but im working on making it able to detect IDs (documents in general).
@@ -30,6 +33,12 @@ class Redactor:
   # main redactor code
   def redaction(self):
 
+    #log loaded file
+    logging.info(f"Started redacting file: {self.path}")
+    logging.info(f"File size before redaction: {os.path.getsize(self.path)} bytes")
+    start_time = time.monotonic()
+    process = psutil.Process(os.getpid())
+
     # opening pdf file
     doc = fitz.open(self.path)
     # iterating through pages
@@ -43,8 +52,19 @@ class Redactor:
         # drawing outline over sensitive datas
         [page.add_redact_annot(area, fill = (0,0,0)) for area in areas]
 
+        logging.info(f"Redacting item {data}")
+        mem_usage = process.memory_info().rss / 1024 / 1024
+        logging.debug(f"Memory usage: {mem_usage:.2f} MB")
+
       # applying redaction
       page.apply_redactions()
 
     # saving it to a new pdf
+    # outfile = doc.save("redacted.pdf")
     doc.save("redacted.pdf")
+    end_time = time.monotonic()
+    elapsed_time = end_time - start_time
+    logging.info(f"File size after redaction: {os.path.getsize('redacted.pdf')} bytes")
+    logging.info("Finished redacting file. Elapsed time %.3f", elapsed_time)
+    # notice that redaction DOES increase the file size
+  
