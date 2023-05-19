@@ -1,8 +1,9 @@
 pdf2image
 pypdf2
 pymupdf
-fitz
+pdfrw
 fpdf
+fitz
 img2pdf
 psutil
 tqdm
