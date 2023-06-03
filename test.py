@@ -74,9 +74,9 @@ class ViboraTesting(unittest.TestCase):
     except Exception as e:
       self.fail(f"extract_img_from_pdf raised an unexpected exception: {e}")
     # check if the output file exists
-    self.assertTrue(os.path.exists('img1.jpeg'))
+    self.assertTrue(os.path.exists('Image1_1.jpeg'))
     # delete test files
-    for file in glob.glob('img*.jpeg'):
+    for file in glob.glob('Image*.jpeg'):
       os.remove(file)
       print("img_from_pdf OK")
 
