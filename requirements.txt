@@ -1,0 +1,11 @@
+pdf2image
+pypdf2
+pymupdf
+pdfrw
+fpdf
+fitz
+img2pdf
+psutil
+tqdm
+keyboard
+pyttsx3
