@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ci-info==0.3.0
 configparser==5.3.0
 deprecation==2.1.0
@@ -31,3 +32,16 @@ simplejson==3.19.1
 tqdm==4.65.0
 traits==6.3.2
 tzdata==2023.3
+=======
+pdf2image
+pypdf2
+pymupdf
+pdfrw
+fpdf
+fitz
+img2pdf
+psutil
+tqdm
+keyboard
+pyttsx3
+>>>>>>> main

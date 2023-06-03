@@ -11,7 +11,7 @@ class Redactor:
   # function to get all the lines
   def get_sensitive_data(lines):
     # email regex
-    EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d]+)"
+    EMAIL_REG = r"([\w\.\d]+\@[\w\d]+\.[\w\d\.]+)"
 
     # cpf regex
     CPF_REG = r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b"
