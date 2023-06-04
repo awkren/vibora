@@ -91,7 +91,7 @@ def compress_pdf(pdf_path, output: Optional[str] = None, progress_interval=1, nu
         if i+1 >= progress_counter + progress_interval or i+1 == num:
           progress_counter = i+1
           progress_percent = progress_counter / num * 100
-          logging.info(f"Compressed {progress_counter} of {num} pages ({progress_percent:.1f}%)")
+          # logging.info(f"Compressed {progress_counter} of {num} pages ({progress_percent:.1f}%)")
           pbar.update(1)
 
     # HERE WE USE MULTIPROCESSING
