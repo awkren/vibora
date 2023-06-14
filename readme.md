@@ -29,6 +29,11 @@ Clone the repo to your machine:
 ```
 git clone https://github.com/wuzue/vibora
 ```
+_Optional: Use a virtual environment for managing dependencies._
+```
+python -m venv venv
+. ./venv/Scripts/activate
+```
 Make sure to install the required dependencies. They are located in the ```requirements.txt``` file.
 ```
 pip install -r requirements.txt
