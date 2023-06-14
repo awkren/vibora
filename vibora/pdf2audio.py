@@ -3,9 +3,18 @@ from PyPDF2 import PdfReader
 
 # pdf to audio
 def speak_text(text):
-  engine = pyttsx3.init()
-  engine.say(text)
-  engine.runAndWait()
+  try:
+    engine = pyttsx3.init()
+  except Exception as e:
+    print(f'{9}: {e}')
+  try:
+    engine.say(text)
+  except Exception as e:
+    print(f'{13}: {e}')
+  try:
+    engine.runAndWait()
+  except Exception as e:
+    print(f'{18}: {e}')
 
 def audio(pdf_path):
   with open(pdf_path, 'rb') as f:
