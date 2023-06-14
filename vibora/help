@@ -57,4 +57,13 @@ DECRYPT PDF:
    It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.
 
 READ PDF FOR ME:
-   To make vibora read (yes, audio related) a .PDF file
+   To make vibora read (yes, audio related) a .PDF file, you can use: 'speak [file].pdf'")
+   It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
+
+REDACT SENSITIVE INFORMATION:
+   To redact sensitive information in a .PDF file, you can use: 'redact [file].pdf'")
+   It will hide sensitive information behind a black rectangle.")
+
+COMPARE FILES:
+   To compare files at a low level, you can use: 'compare [file1.pdf] [file2.pdf]'")
+   It will compare these files at a low level (length, metadata, etc) to see if they match.")
