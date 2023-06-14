@@ -1,20 +1,12 @@
-import keyboard, pyttsx3, threading
+import keyboard, pythoncom, pyttsx3, threading
 from PyPDF2 import PdfReader
 
 # pdf to audio
 def speak_text(text):
-  try:
-    engine = pyttsx3.init()
-  except Exception as e:
-    print(f'{9}: {e}')
-  try:
-    engine.say(text)
-  except Exception as e:
-    print(f'{13}: {e}')
-  try:
-    engine.runAndWait()
-  except Exception as e:
-    print(f'{18}: {e}')
+  pythoncom.CoInitialize()
+  engine = pyttsx3.init()
+  engine.say(text)
+  engine.runAndWait()
 
 def audio(pdf_path):
   with open(pdf_path, 'rb') as f:
