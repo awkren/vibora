@@ -57,7 +57,7 @@ DECRYPT PDF:
    It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.
 
 READ PDF FOR ME:
-   To make vibora read (yes, audio related) a .PDF file, you can use: 'speak [file].pdf'")
+   To make vibora read (yes, audio related) a .PDF file, you can use: 'pdf2audio [file].pdf'")
    It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")
 
 REDACT SENSITIVE INFORMATION:
