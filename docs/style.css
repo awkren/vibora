@@ -1,25 +1,21 @@
-body{
-  /* background-color: #ccc5b9; */
-  font-family: sans-serif;
-  margin: auto;
-  width:80%;
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
 
-#title{
-  
+h1 {
+  color: #333;
+  text-decoration: underline;
 }
 
-.cx{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+p {
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-*{border:1px solid red;}
-
-img{
-  width: 200px;
+code {
+  background-color: #f1f1f1;
+  padding: 2px 5px;
+  border-radius: 3px;
 }
 
-p{
-  font-size: 1.2rem;
-}

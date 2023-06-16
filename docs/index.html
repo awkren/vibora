@@ -1,26 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf=8">
-  <title>vibora</title>
-  <link rel="stylesheet" href="style.css">
-</head>  
+  <title>Vibora PDF Tools</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-  <div id="title">
-    <img src="https://png.pngtree.com/png-clipart/20230323/ourmid/pngtree-fierce-cartoon-snake-png-image_6659202.png"/>
-    <p><b>vibora, the pdf manipulation tool</b></p>
-  </div>
-  <div class="cx">
-    <div>
-      asds
-    </div>
-    <div>
-      asdsad
-    </div>
-    <div>
-      asdsadsa
-    </div>
-  </div>
+  <h1>Welcome to Vibora :)</h1>
+  <p>A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!</p>
+
+  <h2>PDF TO PNG:</h2>
+  <p>To convert a .PDF to .PNG, use: <code>pdf2png [file].pdf</code></p>
+  <p>Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)</p>
+
+  <h2>PDF TO TEXT:</h2>
+  <p>To convert a .PDF to .TXT, use: <code>pdf2text [file].pdf</code></p>
+  <p>Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)</p>
+
+  <h2>EXTRACT IMAGES FROM PDF:</h2>
+  <p>To extract images from a .PDF file, use: <code>extractimg [file].pdf</code></p>
+  <p>You will be prompted with the amount of images found, and if you want to proceed or not.</p>
+
+  <h2>COMPRESS PDF:</h2>
+  <p>To compress a .PDF file, use: <code>compress [file].pdf</code></p>
+  <p>It will try to compress your file without losing quality or removing content.</p>
+
+  <h2>TXT TO PDF:</h2>
+  <p>To convert a .TXT file to .PDF, use: <code>txt2pdf [file].txt</code></p>
+  <p>It will convert a .txt file into .pdf.</p>
+
+  <h2>MERGE PDFs:</h2>
+  <p>To merge .PDF files into one .PDF, use: <code>merge [file1].pdf [file2].pdf [file3].pdf</code></p>
+  <p>It will merge the files provided, without losing quality or cutting content. It can take as many files as you want.</p>
+
+  <h2>MERGE ALL PDF FILES INSIDE DIRECTORY:</h2>
+  <p>To merge all .PDF files inside a directory, use: <code>mergeall [directory]</code></p>
+  <p>It will ignore non .PDF files and merge all .PDF files inside that folder. Files are merged by alphabetical order.</p>
+
+  <h2>RENAME FILES:</h2>
+  <p>To rename files using Vibora, you can use: <code>rename [file].pdf [newname].pdf</code></p>
+  <p>It will change the name of the file you provided, with the name you typed after it, without affecting the file.</p>
+
+  <h2>ROTATE PDF:</h2>
+  <p>To rotate a .PDF file, you can you can use: <code>rotate [file].pdf</code></p>
+  <p>It will rotate you file by 90º. Depending on your file, you may want to rotate it multiple times.</p>
+
+  <h2>IMAGE TO PDF:</h2>
+  <p>To convert an image to a .pdf file, you can use: <code>img2pdf [file].[extension]</code></p>
+  <p>It can convert multiple image formats into a .PDF file</p>
+
+  <h2>SPLIT PDF:</h2>
+  <p>To split a .PDF file into separated pages, you can use: <code>split [file].pdf</code></p>
+  <p>It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.</p>
   
+  <h2>WATERMARK PDF:</h2>
+  <p>To add watermark to a .PDF file, you can use: <code>watermark [file].pdf [watermarkfile].pdf</code></p>
+  <p>It will add a watermark to the bottom left of the .PDF file. Remember that the watermark must also be a .PDF file.</p>
+
+  <h2>ENCRYPT PDF:</h2>
+  <p>To encrypt a .PDF file, you can use: <code>encrypt [file].pdf [password]</code></p>
+  <p>It will encrypt a .pdf file by adding a password to be able to read its content.</p>
+
+    <h2>DECRYPT PDF:</h2>
+  <p>To decrypt a .PDF file, you can use: <code>decrypt [file].pdf [password]</code></p>
+  <p>It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.</p>
+
+    <h2>READ PDF FOR ME:</h2>
+  <p>To make vibora read (yes, audio related) a .PDF file, you can use: <code>pdf2audio [file].pdf</code></p>
+  <p>It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")</p>
+
+    <h2>REDACT SENSITIVE INFORMATION:</h2>
+  <p>To redact sensitive information in a .PDF file, you can use: <code>redact [file].pdf</code></p>
+  <p>It will hide sensitive information behind a black rectangle.")</p>
+
+    <h2>COMPARE FILES:</h2>
+  <p>To compare files at a low level, you can use: <code>compare [file1.pdf] [file2.pdf]</code></p>
+  <p>It will compare these files at a low level (length, metadata, etc) to see if they match.")</p>
+
 </body>
 </html>
