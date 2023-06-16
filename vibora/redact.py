@@ -41,6 +41,10 @@ class Redactor:
 
     # opening pdf file
     doc = fitz.open(self.path)
+
+    # redaction items counter
+    redaction_counter = 0
+
     # iterating through pages
     for page in doc:
       # _wrapContents is used to fix alignment issues with rect boxes
@@ -51,6 +55,8 @@ class Redactor:
         areas = page.search_for(data)
         # drawing outline over sensitive datas
         [page.add_redact_annot(area, fill = (0,0,0)) for area in areas]
+
+        redaction_counter += 1
 
         logging.info(f"Redacting item {data}")
         mem_usage = process.memory_info().rss / 1024 / 1024
@@ -66,5 +72,6 @@ class Redactor:
     elapsed_time = end_time - start_time
     logging.info(f"File size after redaction: {os.path.getsize('redacted.pdf')} bytes")
     logging.info("Finished redacting file. Elapsed time %.3f", elapsed_time)
+    logging.info(f"Total sensitive items redacted: {redaction_counter}")
     # notice that redaction DOES increase the file size
   
