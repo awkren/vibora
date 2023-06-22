@@ -1,80 +1,195 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Vibora PDF Tools</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <h1>Welcome to Vibora :)</h1>
-  <p>A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!</p>
+  <head>
+    <meta charset='utf-8'>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vibora - the pdf manipulation tool</title>
+  </head>
+  <body>
+    
+    <div class="main-div">
+    
+      <div class="header">
+        <img src="assets/realfang.png" width="100px"/>
+        <p class="welcome-title">Welcome to vibora :)</p>
+        <p>A PDF tool that lets you convert a PDF to PNG, PDF to text, plus some more awesome things. See below!</p>
+        <hr>
+        <div class="contact">
+          <p><a href="https://github.com/wuzue/vibora">https://github.com/wuzue/vibora</a></p>
+          <p><a href="mailto:awkrenan@gmail.com">awkrenan@gmail.com</a></p>
+        </div>
+        <hr>
+      </div>
 
-  <h2>PDF TO PNG:</h2>
-  <p>To convert a .PDF to .PNG, use: <code>pdf2png [file].pdf</code></p>
-  <p>Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)</p>
+      <div class="functions">
+        <div>
+          <p class="titles">
+            PDF TO PNG:
+          </p>          
+          <p>
+          To convert a .PDF to .PNG, use: <code>pdf2png [file].pdf</code><br>
+            Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)
+          </p>
+        </div>
 
-  <h2>PDF TO TEXT:</h2>
-  <p>To convert a .PDF to .TXT, use: <code>pdf2text [file].pdf</code></p>
-  <p>Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)</p>
+        <div>
+          <p class="titles">
+            PDF TO TEXT:
+          </p>
+          <p>
+          To convert a .PDF to .TXT, use: <code>pdf2text [file].pdf</code><br>
+            Remember to provide the full path to the file, and do not forget to add the .pdf at the end ;)
+          </p>
+        </div>
 
-  <h2>EXTRACT IMAGES FROM PDF:</h2>
-  <p>To extract images from a .PDF file, use: <code>extractimg [file].pdf</code></p>
-  <p>You will be prompted with the amount of images found, and if you want to proceed or not.</p>
+        <div>
+          <p class="titles">
+            EXTRACT IMAGES FROM PDF:
+          </p>
+          <p>
+          To extract images from a .PDF file, use: <code>extractimg [file].pdf</code><br>
+            You will be prompted with the amount of images found, and if you want to proceed or not.
+          </p>
+        </div>
 
-  <h2>COMPRESS PDF:</h2>
-  <p>To compress a .PDF file, use: <code>compress [file].pdf</code></p>
-  <p>It will try to compress your file without losing quality or removing content.</p>
+        <div>
+          <p class="titles">
+            COMPRESS PDF:
+          </p>
+          <p>
+          To compress a .PDF file, use: <code>compress [file].pdf</code><br>
+            It will try to compress your file without losing quality or removing content.
+          </p>
+        </div>
 
-  <h2>TXT TO PDF:</h2>
-  <p>To convert a .TXT file to .PDF, use: <code>txt2pdf [file].txt</code></p>
-  <p>It will convert a .txt file into .pdf.</p>
+        <div>
+          <p class="titles">
+            TXT TO PDF:
+          </p>
+          <p>
+          To convert a .TXT file to .PDF, use: <code>txt2pdf [file].txt</code><br>
+            It will convert a .txt file into .pdf.
+          </p>
+        </div>
 
-  <h2>MERGE PDFs:</h2>
-  <p>To merge .PDF files into one .PDF, use: <code>merge [file1].pdf [file2].pdf [file3].pdf</code></p>
-  <p>It will merge the files provided, without losing quality or cutting content. It can take as many files as you want.</p>
+        <div>
+          <p class="titles">
+            MERGE PDFs:
+          </p>
+          <p>
+          To merge .PDF files into one .PDF, use: <code>merge [file1].pdf [file2].pdf [file3].pdf</code><br>
+            It will merge the files provided, without losing quality or cutting content. It can take as many files as you want.
+          </p>
+        </div>
 
-  <h2>MERGE ALL PDF FILES INSIDE DIRECTORY:</h2>
-  <p>To merge all .PDF files inside a directory, use: <code>mergeall [directory]</code></p>
-  <p>It will ignore non .PDF files and merge all .PDF files inside that folder. Files are merged by alphabetical order.</p>
+        <div>
+          <p class="titles">
+            MERGE ALL PDF FILES INSIDE DIRECTORY:
+          </p>
+          <p>
+          To merge all .PDF files inside a directory, use: <code>mergeall [directory]'</code><br>
+            It will ignore non .PDF files and merge all .PDF files inside that folder. Files are merged by alphabetical order.
+          </p>
+        </div>
 
-  <h2>RENAME FILES:</h2>
-  <p>To rename files using Vibora, you can use: <code>rename [file].pdf [newname].pdf</code></p>
-  <p>It will change the name of the file you provided, with the name you typed after it, without affecting the file.</p>
+        <div>
+          <p class="titles">
+            RENAME FILES:
+          </p>
+          To rename files using vibora, you can use: <code>rename [file].pdf [newname].pdf</code><br>
+            It will change the name of the file you provided, with the name you typed after it, without affecting the file.
+        </div>
 
-  <h2>ROTATE PDF:</h2>
-  <p>To rotate a .PDF file, you can you can use: <code>rotate [file].pdf</code></p>
-  <p>It will rotate you file by 90º. Depending on your file, you may want to rotate it multiple times.</p>
+        <div>
+          <p class="titles">
+            ROTATE PDF:
+          </p>
+          <p>
+          To rotate a .PDF file, you can you can use: <code>rotate [file].pdf</code><br>
+            It will rotate you file by 90º. Depending on your file, you may want to rotate it multiple times.
+          </p>
+        </div>
 
-  <h2>IMAGE TO PDF:</h2>
-  <p>To convert an image to a .pdf file, you can use: <code>img2pdf [file].[extension]</code></p>
-  <p>It can convert multiple image formats into a .PDF file</p>
+        <div>
+          <p class="titles">
+            IMAGE TO PDF:
+          </p>
+          <p>
+          To convert an image to a .PDF file, you can you can use: <code>img2pdf [file].[extension]</code><br>
+           It can convert multiple image formats into a .PDF file.
+          </p>
+        </div>
 
-  <h2>SPLIT PDF:</h2>
-  <p>To split a .PDF file into separated pages, you can use: <code>split [file].pdf</code></p>
-  <p>It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.</p>
-  
-  <h2>WATERMARK PDF:</h2>
-  <p>To add watermark to a .PDF file, you can use: <code>watermark [file].pdf [watermarkfile].pdf</code></p>
-  <p>It will add a watermark to the bottom left of the .PDF file. Remember that the watermark must also be a .PDF file.</p>
+        <div>
+          <p class="titles">
+            SPLIT PDF:
+          </p>
+          <p>
+          To split a .PDF file into separated pages, you can you can use: <code>split [file].pdf</code><br>
+            It will split the .PDF file into separated pages. Each page from the .PDF will be a single .PDF file.
+          </p>
+        </div>
 
-  <h2>ENCRYPT PDF:</h2>
-  <p>To encrypt a .PDF file, you can use: <code>encrypt [file].pdf [password]</code></p>
-  <p>It will encrypt a .pdf file by adding a password to be able to read its content.</p>
+        <div>
+          <p class="titles">
+            WATERMARK PDF:
+          </p>
+          <p>
+          To add watermark to a a .PDF file, you can you can use: <code>watermark [file].pdf [watermarkfile].pdf</code><br>
+            It will add a watermark to the bottom left of the .PDF file. Remember that the watermark must also be a .PDF file.
+          </p>
+        </div>
 
-    <h2>DECRYPT PDF:</h2>
-  <p>To decrypt a .PDF file, you can use: <code>decrypt [file].pdf [password]</code></p>
-  <p>It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.</p>
+        <div>
+          <p class="titles">
+          ENCRYPT PDF:
+          </p>
+          <p>
+          To encrypt a .PDF file, you can you can use: <code>encrypt [file].pdf [password]</code><br>
+            It will encrypt a .pdf file by adding a password to be able to read its content.
+          </p>
+        </div>
+        <div>
+          <p class="titles">
+            DECRYPT PDF:
+          </p>
+          <p>
+          To decrypt a .PDF file, you can you can use: <code>decrypt [file].pdf [password]</code><br>
+            It will remove the password of a pdf file. Note that it doesn't crack the .pdf file, it works only if you have the password.
+          </p>
+        </div>
 
-    <h2>READ PDF FOR ME:</h2>
-  <p>To make vibora read (yes, audio related) a .PDF file, you can use: <code>pdf2audio [file].pdf</code></p>
-  <p>It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.")</p>
+        <div>
+          <p class="titles">
+            READ PDF FOR ME:
+          </p>
+          <p>
+          To make vibora read (yes, audio related) a .PDF file, you can use: <code>pdf2audio [file].pdf</code><br>
+            It will start reading the text of a pdf file for you. You can stop it by pressing CTRL + C.
+          </p>
+        </div>
 
-    <h2>REDACT SENSITIVE INFORMATION:</h2>
-  <p>To redact sensitive information in a .PDF file, you can use: <code>redact [file].pdf</code></p>
-  <p>It will hide sensitive information behind a black rectangle.")</p>
+        <div>
+          <p class="titles">
+            REDACT SENSITIVE INFORMATION:
+          </p>
+          <p>
+          To redact sensitive information in a .PDF file, you can use: <code>redact [file].pdf</code><br>
+            It will hide sensitive information behind a black rectangle.
+          </p>
+        </div>
 
-    <h2>COMPARE FILES:</h2>
-  <p>To compare files at a low level, you can use: <code>compare [file1.pdf] [file2.pdf]</code></p>
-  <p>It will compare these files at a low level (length, metadata, etc) to see if they match.")</p>
-
-</body>
+        <div>
+          <p class="titles">
+            COMPARE FILES:
+          </p>
+          <p>
+          To compare files at a low level, you can use: <code>compare [file1.pdf] [file2.pdf]</code><br>
+            It will compare these files at a low level (length, metadata, etc) to see if they match.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
