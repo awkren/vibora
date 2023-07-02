@@ -46,3 +46,4 @@ tqdm==4.65.0
 traits==6.3.2
 tzdata==2023.3
 urllib3==2.0.3
+getch
