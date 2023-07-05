@@ -1,13 +1,6 @@
 import pyttsx3
 import time
 from PyPDF2 import PdfReader
-import platform
-
-if platform.system() == "Windows":
-    from msvcrt import getch
-else:
-    from getch import getch
-
 
 # pdf to audio
 def speak_text(text):
@@ -22,11 +15,6 @@ def audio(pdf_path):
         for page in pdf_reader.pages:
             text = page.extract_text()
             speak_text(text)
-            sleep_duration = 0.5
-            start_time = time.time()
-
-            while time.time() - start_time < sleep_duration:
-                if getch() == b"\x03":  # Check for Ctrl+C key press
-                    return  # Exit the function if Ctrl+C is pressed
-                else:
-                    continue  # to go to the next page automatically
+            time.sleep(0.5)  # Adjust the sleep duration as needed
+                             # It is the delay to start reading the next page
+            
