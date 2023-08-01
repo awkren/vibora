@@ -16,5 +16,5 @@ def audio(pdf_path):
             text = page.extract_text()
             speak_text(text)
             time.sleep(0.5)  # Adjust the sleep duration as needed
-                             # It is the delay to start reading the next page
-            
+            # It is the delay to start reading the next page
+

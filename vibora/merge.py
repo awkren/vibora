@@ -4,65 +4,77 @@ from PyPDF2 import PdfMerger
 # python main.py merge
 # merge pdf files
 def merge_pdf(*pdf_files, progress_interval=1):
-  try:
-    logging.info(f"Started merging files: {pdf_files}")
-    start_time = time.time()
-    process = psutil.Process(os.getpid())
-    total_size = 0
-    num = len(pdf_files)
-    progress_counter = 0
-    for pdf_file in pdf_files:
-      file_size = os.path.getsize(pdf_file)
-      total_size += file_size
-      logging.info(f"Size of {pdf_file}: {file_size} bytes")
-    logging.info(f"Total size of files: {total_size} bytes")
-    merger = PdfMerger()
-    for i, pdf_file in enumerate(pdf_files):
-      logging.debug(f"Merging file {i+1}")
-      with open(pdf_file, 'rb') as f:
-        merger.append(f)
-      mem_usage = process.memory_info().rss / 1024 / 1024
-      logging.debug(f"Memory usage: {mem_usage:.2f} MB")
-      if i+1 >= progress_counter + progress_interval or i+1 == num:
-        progress_counter = i+1
-        progress_percent = progress_counter / num * 100
-        logging.info(f"Merged {progress_counter} of {num} files ({progress_percent:.1f}%)")
-    merger.write("merged_file.pdf")
-    merger.close()
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    logging.info(f"File size after merge: {os.path.getsize('merged_file.pdf')} bytes")
-    logging.info("Finished merging files. Elapsed time %.3f", elapsed_time)
-  except Exception as e:
-    logging.exception(e)
+    try:
+        logging.info(f"Started merging files: {pdf_files}")
+        start_time = time.time()
+        process = psutil.Process(os.getpid())
+        total_size = 0
+        num = len(pdf_files)
+        progress_counter = 0
+        for pdf_file in pdf_files:
+            file_size = os.path.getsize(pdf_file)
+            total_size += file_size
+            logging.info(f"Size of {pdf_file}: {file_size} bytes")
+        logging.info(f"Total size of files: {total_size} bytes")
+        merger = PdfMerger()
+        for i, pdf_file in enumerate(pdf_files):
+            logging.debug(f"Merging file {i+1}")
+            with open(pdf_file, "rb") as f:
+                merger.append(f)
+            mem_usage = process.memory_info().rss / 1024 / 1024
+            logging.debug(f"Memory usage: {mem_usage:.2f} MB")
+            if i + 1 >= progress_counter + progress_interval or i + 1 == num:
+                progress_counter = i + 1
+                progress_percent = progress_counter / num * 100
+                logging.info(
+                    f"Merged {progress_counter} of {num} files ({progress_percent:.1f}%)"
+                )
+        merger.write("merged_file.pdf")
+        merger.close()
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        logging.info(
+            f"File size after merge: {os.path.getsize('merged_file.pdf')} bytes"
+        )
+        logging.info("Finished merging files. Elapsed time %.3f", elapsed_time)
+    except Exception as e:
+        logging.exception(e)
+
 
 # python main.py mergeall
 # merge pdf files inside folder, ignores non .pdf files
 def merge_pdf_directory(directory_path, progress_interval=1):
-  try:
-    logging.info(f"Started merging files in directory: {directory_path}")
-    start_time = time.time()
-    process = psutil.Process(os.getpid())
-    merger = PdfMerger()
-    pdf_files = [file for file in os.listdir(directory_path) if file.endswith('.pdf')]
-    num = len(pdf_files)
-    progress_counter = 0
-    total_size = 0
-    for i, pdf_file in enumerate(pdf_files):
-      logging.debug(f"Mergin file {i+1}")
-      with open(os.path.join(directory_path, pdf_file), 'rb') as f:
-        merger.append(f)
-      mem_usage = process.memory_info().rss / 1024 / 1024
-      logging.debug(f"Memory usage: {mem_usage:.2f} MB")
-      if i+1 >= progress_counter + progress_interval or i+1 == num:
-        progress_counter = i+1
-        progress_percent = progress_counter / num * 100
-        logging.info(f"Merged {progress_counter} of {num} files ({progress_percent:.1f}%)")
-    merger.write('mergedall_file.pdf')
-    merger.close()
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    logging.info(f"File size after merge: {os.path.getsize('mergedall_file.pdf')} bytes")
-    logging.info("Finished merging files. Elapsed time %.3f", elapsed_time)
-  except Exception as e:
-    logging.exception(e)
+    try:
+        logging.info(f"Started merging files in directory: {directory_path}")
+        start_time = time.time()
+        process = psutil.Process(os.getpid())
+        merger = PdfMerger()
+        pdf_files = [
+            file for file in os.listdir(directory_path) if file.endswith(".pdf")
+        ]
+        num = len(pdf_files)
+        progress_counter = 0
+        total_size = 0
+        for i, pdf_file in enumerate(pdf_files):
+            logging.debug(f"Mergin file {i+1}")
+            with open(os.path.join(directory_path, pdf_file), "rb") as f:
+                merger.append(f)
+            mem_usage = process.memory_info().rss / 1024 / 1024
+            logging.debug(f"Memory usage: {mem_usage:.2f} MB")
+            if i + 1 >= progress_counter + progress_interval or i + 1 == num:
+                progress_counter = i + 1
+                progress_percent = progress_counter / num * 100
+                logging.info(
+                    f"Merged {progress_counter} of {num} files ({progress_percent:.1f}%)"
+                )
+        merger.write("mergedall_file.pdf")
+        merger.close()
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        logging.info(
+            f"File size after merge: {os.path.getsize('mergedall_file.pdf')} bytes"
+        )
+        logging.info("Finished merging files. Elapsed time %.3f", elapsed_time)
+    except Exception as e:
+        logging.exception(e)
+
