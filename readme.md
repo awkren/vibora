@@ -27,7 +27,7 @@ https://github.com/oschwartz10612/poppler-windows/releases/
 ```
 Clone the repo to your machine:
 ```
-git clone https://github.com/wuzue/vibora
+git clone https://github.com/awkren/vibora
 ```
 _Optional: Use a virtual environment for managing dependencies._
 ```
@@ -35,6 +35,7 @@ python -m venv venv
 . ./venv/Scripts/activate
 ```
 Make sure to install the required dependencies. They are located in the ```requirements.txt``` file.
+_If you are using Windows, install the ```requirements.txt``` file, Linux users must install the ```linux-requirements.txt``` file._
 ```
 pip install -r requirements.txt
 ```
