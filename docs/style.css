@@ -36,8 +36,6 @@ p{
   }
 }
 
-
-
 .functions{
   display: flex;
   flex-direction: column;
@@ -50,4 +48,10 @@ p{
 
 code{
   background-color: lightgray;
+}
+
+#how-to-use{
+  font-size: 1.4rem;
+  text-decoration:underline;
+  font-weight: bold;
 }
