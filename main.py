@@ -316,6 +316,6 @@ if __name__ == '__main__':
         fitzcomp(pdf_path)
 
       case 'pdfsearch':
-        theme = args.theme
+        theme = ' '.join(args.theme)
         pdf_search(theme)
 
