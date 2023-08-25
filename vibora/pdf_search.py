@@ -7,9 +7,12 @@ def pdf_search(theme):
 
     keywords = ' '.join(words[:-1]) + f"{last_word}:pdf" # self explanatory....
     print(keywords)
-    max_files = 3 # define number of pdf files result
+    max_files = 10 # define number of pdf files result
     print(max_files)
     result = ddg(keywords, safesearch='Off', max_results=max_files)
+    print(f"\nI found these results for '{theme}' I think are most relevant based on what you want:\n")
     for i in range(max_files):
-        response = f"I found this pdf for {theme}: {result[i]['title']}"
+        response = f"{result[i]['title']}\n{result[i]['href']}\n"
+
         print(response)
+    print("") # empty line at the bottom to give results some space :) it needs some air
