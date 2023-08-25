@@ -20,6 +20,7 @@ from vibora.redact import Redactor
 from vibora.compare import compare_file
 from vibora.extra_compression.rwcompression import rwcomp
 from vibora.extra_compression.fitzcompression import fitzcomp
+from vibora.pdf_search import pdf_search
 
 if __name__ == '__main__':
   # case we type only vibora
@@ -140,6 +141,10 @@ if __name__ == '__main__':
     # fitzcompression subparser
     fitzcompression_parser = subparser.add_parser('fitzcompress', help='help message', description='Compress files using pymupdf.')
     fitzcompression_parser.add_argument('pdf_path', type=str, metavar='pdf_path', help='Path to the .PDF file.')
+
+    # pdf seach subparser
+    pdf_search_parser = subparser.add_parser('pdfsearch', help='help message', description='Search for .PDF files in the web.')
+    pdf_search_parser.add_argument('theme', type=str, nargs='+', metavar='theme', help='What kind of .PDF files you want to find?')
 
     args = parser.parse_args()  
 
@@ -309,4 +314,8 @@ if __name__ == '__main__':
       case 'fitzcompress':
         pdf_path = args.pdf_path
         fitzcomp(pdf_path)
+
+      case 'pdfsearch':
+        theme = ' '.join(args.theme)
+        pdf_search(theme)
 
